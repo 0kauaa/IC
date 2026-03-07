@@ -1,0 +1,14 @@
+# Stack / Cabal
+.stack-work/
+dist-newstyle/
+*.cabal.lock
+*.hi
+*.o
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários de editores
+*~
+*.swp

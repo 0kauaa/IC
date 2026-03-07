@@ -1,0 +1,413 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[brazil,shorthands=off]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz-cd}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{tocbibind} % inclui referências no sumário
+\usepackage{hyperref}
+
+% configurações de margens ABNT
+\geometry{
+  top=3cm,
+  bottom=2cm,
+  left=3cm,
+  right=2cm
+}
+
+% espaçamento 1,5
+\onehalfspacing
+
+% configuração de títulos
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% espaçamento entre parágrafos
+\setlength{\parskip}{0.5em}
+
+% capa
+\newcommand{\makecover}{
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{2cm}
+            \textbf{FATEC RUBENS LARA} \\
+            CIÊNCIA DE DADOS - 4º CICLO \\
+            
+            \vspace{4cm}
+            \textbf{APRENDIZADO DE MÁQUINA COMO FUNCTORES ENTRE CATEGORIAS: UMA ABORDAGEM MATEMÁTICA E ESTRUTURAL} \\
+            
+            \vspace{4cm}
+            ALEXANDRE GARCIA DE OLIVEIRA \\
+            KAUÃ SANTANA DA SILVA\\
+            
+            \vfill
+            SANTOS-SP\\
+            OUTUBRO/2025
+        \end{center}
+    \end{titlepage}
+}
+
+% folha de rosto
+\newcommand{\makefolharosto}{
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{2cm}
+            \textbf{FATEC RUBENS LARA} \\
+             CIÊNCIA DE DADOS - 4º CICLO \\
+            
+            \vspace{4cm}
+            Kauã Santana da Silva\\
+            
+            \vspace{2cm}
+            % justificado à direita
+            \begin{flushright}
+            \begin{minipage}{0.5\textwidth} % largura do bloco
+            \justifying
+            Projeto de Pesquisa apresentado à Faculdade de Tecnologia da Baixada Santista “Rubens Lara” do Curso Superior de Tecnologia em Ciência de Dados no Programa de Iniciação Científica.
+            
+            \vspace{1cm}
+            Orientador: Professor Dr. Alexandre Garcia de Oliveira
+            \end{minipage}
+            \end{flushright}
+            
+            \vfill
+            SANTOS-SP\\
+            OUTUBRO/2025
+        \end{center}
+    \end{titlepage}
+}
+
+\begin{document}
+
+%capa e folha de rosto
+\makecover
+\makefolharosto
+
+% numeração de páginas após a folha de rosto
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+% sumário
+\tableofcontents
+\newpage
+
+%introdução
+\section{INTRODUÇÃO}
+\label{sec:int}
+
+Ao longo dos anos, os matemáticos vêm trabalhando com uma ampla variedade de conceitos diferentes, cada um com definições e propriedades específicas para uma particular área de estudo — propriedades que tornam cada área distinta. Os Topólogos estudam espaços topológicos, a Teoria dos Conjunto estuda as propriedade de Conjuntos, a Teoria dos Grupos estuda a ideia de Grupos, Álgebra Linear estuda Espaços Vetoriais. Todas essas disciplinas, entre muitas outras, se preocupam com diferentes tipos de estruturas e criaram, com o tempo, diferentes ferramentas e conceitos para lidar com cada uma delas, cada área com seu próprio vocabulário. Mesmo sendo áreas diferentes, todas fazem parte da ciência matemática. Diante a isso, é comum que suas estruturas de estudo, por mais diferentes que sejam, detenham muitas coisas em comum. Elas podem parecer diferentes, mas suas fundações são mais similares do que se possa esperar, e é aqui que surge a idéia de formalizar um único modo de definir e pensar os contextos e os objetos matemáticos, mesmo que em diferentes áreas.
+
+A Teoria das Categorias (TdC) surge, em 1945, por Samuel Eilenberg e Saunder Mac Lane em seu artigo \textit{General Theory of Natural Equivalences} como uma “forma padrão” de se compreender e definir diferentes estruturas e suas relações, mesmo que em diferentes áreas do conhecimento. Para Mariano e Meleiro (2021, p. 14), a TdC pode ser compreendida como “a sociologia das entidades matemáticas”, pois ela presume que cada objeto estudado pela matemática pode ser melhor compreendido por meio de suas relações com outros objetos de mesma (ou correlacionada) espécie. Isto é, deixar de estudar um objeto por suas definições singulares e começar a estudá-lo por sua estrutura e seus relacionamentos com os demais. Desta forma, a TdC consiste em uma rica formalização dessas relações, com o intuito de padronizar o vocabulário matemático.
+
+A TdC vem sendo amplamente explorada na Ciência da Computação, por fornecer uma estrutura de ideias organizadas e ajudar a unificar conceitos, entender semelhanças entre diferentes sistemas e formalizar problemas complexos de forma consistente. Sua importância está no fato de oferecer uma linguagem matemática abstrata capaz de descrever, de forma unificada, diferentes estruturas computacionais e suas inter-relações (Menezes; Haeusler, 2001). Enquanto a lógica tradicional preocupa-se em definir o que é verdadeiro dentro de um sistema formal, a TdC foca nas relações entre estruturas — isto é, nos modos como funções, tipos e programas se conectam e se transformam. Essa perspectiva relacional é valiosa para a computação, uma vez que todo programa pode ser entendido como uma composição de transformações entre dados.
+
+Além disso, a TdC tem desempenhado um papel crescente em subáreas mais modernas da Ciência da Computação como Inteligência Artificial e Aprendizado de Máquina, servindo como base para o desenvolvimento de modelos composicionais de aprendizado. Esse tipo de abordagem permite compreender sistemas complexos de maneira modular e matemática, ampliando as possibilidades de interpretação e verificação formal de algoritmos.
+
+% introdução a TdC
+\section{INTRODUÇÃO À TEORIA DAS CATEGORIAS}
+\label{sec:tdc}
+
+Considerando que a TdC é uma base teórica fortíssima para esta pesquisa, seus conceitos teóricos serão de fundamental importância para sua realização. Portanto, tais conceitos serão tomados como ponto de partida da pesquisa. Abaixo, são descritos os tópicos teóricos base da pesquisa proposta.
+
+% categorias
+\subsection{CATEGORIAS}
+\label{sec:cat}
+
+De acordo com autores como, Almeida (2019) e Clementino (2011), formalmente, uma categoria $\mathcal{C}$ é uma estrutura composta de:
+
+\begin{enumerate}
+    \begin{enumerate}
+        \begin{enumerate}
+
+            % objetos
+            \item Uma classe de objetos da categoria $\mathcal{C}$, denotada por $\mathrm{Obj}(\mathcal{C})$;
+
+            % morfismos
+            \item Para quaisquer objetos $A, B \in \mathrm{Obj}(\mathcal{C})$, uma classe de morfismos $f$ que relacione $A$ com $B$, denotada por $\mathrm{Arr}(\mathcal{C})$ ou $\mathrm{Arr}(A, B)$;
+
+            \begin{center}
+                \begin{tikzcd}
+                    A \arrow[r, "f"] & B
+                \end{tikzcd}
+            \end{center}
+
+            % src e tgt
+            \item Funções de domínio e contradomínio:
+
+            Duas funções $s$ e $t$:
+            
+            \[
+                s, t : \text{Arr}(\mathcal{C}) \to \text{Obj}(\mathcal{C})
+            \]
+
+            Tal que $s(f)$ retorna o objeto de domínio de $f$ e $t(f)$ retorna o objeto de contradomínio de $f$;
+            
+            % composição
+            \item Uma lei de composição:
+
+            \[
+                \circ : \text{Arr}(A,B) \times \text{Arr}(B,C) \to \text{Arr}(A,C)
+            \]
+
+            Tal que garanta uma relação direta entre $A$ e $C$ por meio da composição de $g$ e $f$.
+
+            % diagrama da composição
+            \begin{center}
+                \begin{tikzcd}
+                    A \arrow[r, "f"] \arrow[rd, bend right=20, swap, "g \circ f"]
+                    & B
+                    \arrow[d, "g"] \\
+                    & C
+                \end{tikzcd}
+            \end{center}
+
+            
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+Essa estrutura é regida por dois axiomas fundamentais, que dizem respeito a seus morfismos:
+
+\begin{enumerate}
+    \begin{enumerate}
+        \begin{enumerate}
+
+            % associatividade
+            \item \textbf{Assoviatividade de composição} \\\\
+            Para qualquer tripla de morfismos $f$, $g$ e $h$ $\in \mathrm{Arr(\mathcal{C})}$ e qualquer tripla de objetos $A$, $B$ e $C \in \mathrm{Obj(\mathcal{C})}$, tais que: $f: A \to B$, $g: B \to C$, $h: C \to D$, temos que:
+
+            \[
+                h \circ (g \circ f) = (h \circ g) \circ f.
+            \]
+            Ou seja, a associatividade garante que dois morfismos provenientes de duas composições distintas sejam equivalentes caso tenham o mesmo domínio e o mesmo contradomínio.
+            % diagrama da associatividade
+            \begin{center}
+                \begin{tikzcd}
+                    A \arrow[r, "f"] \arrow[rd, bend right = 20, swap, "g \circ f"] \arrow[rrd, bend right = 80, looseness=1.6, swap, "h \circ (g \circ f)"] \arrow[rrd, bend left = 80, looseness=1.6, "(h \circ g) \circ f"] &
+                    B \arrow[d, "g"] \arrow[rd, bend left = 20, "h \circ g"] \\
+                  & C \arrow[r, "h"] & 
+                    D
+                \end{tikzcd}
+            \end{center}       
+
+            \\
+
+            % identidade
+            \item \textbf{Identidade (elemento neutro)} \\\\\
+            Para cada $\mathrm{A} \in \mathrm{Obj(\mathcal{C})}$, existe um morfismo $id_A$, tal que $id_A: A \to A$, de forma que respeite a comutação de composição: $id_A \circ g = g$ e $f \circ id_A = f$. \\
+
+            \begin{center}
+                \begin{tikzcd}
+                    A \arrow[r, "id_A"] & A
+                \end{tikzcd}
+            \end{center}
+
+            
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+Almeida (2019, p.17) chama atenção para um último pré-requisito para que uma categoria esteja bem formada. Considerando numa categoria $\mathcal{C}$ os objetos $A$, $B$, $C$ e $D$, e dois conjuntos distintos de morfismos \textit{Arr(A, B)} e \textit{Arr(C, D)}, a menos que $A = C$ e $B = D$, devemos ter que
+
+\[
+    \textit{Arr(A, B)} \cap \textit{Arr(C, D)} = \varnothing. 
+\]
+  
+Isto é, caso um ou mais morfismos componham diferentes conjuntos de morfismos simultaneamente, então os morfismos desses conjuntos devem ter o mesmo domínio e contradomínio.
+
+% functores
+\subsection{FUNCTORES}
+\label{sec:fun}
+
+Um functor é um tipo de morfismo que não relaciona dois objetos em uma categoria, mas dois objetos de duas categorias distintas, de modo a preservar suas estruturas. Sejam $\mathcal{C}$ e $\mathcal{D}$ duas categorias, para que o mapeamento $F: \mathcal{C} \to \mathcal{D}$ seja considerado um functor de fato, ele deve satisfazer certas condições:
+
+
+\begin{enumerate}
+    \begin{enumerate}
+        \begin{enumerate}
+            \item \textbf{Preservar morfismos}\\
+            
+            O domínio e contradomínio de qualquer $f \in \mathrm{Arr(\mathcal{C})}$ deve permanecer o mesmo ao ser levado para $\mathcal{D}$ pelo functor, garantindo que $F \circ s(f) = s(f) \circ F$ e $F \circ t(f) = t(f) \circ F$. Isso deve valer para qualquer domínio $A \in \mathcal{C}$, e qualquer contradomínio $B \in \mathcal{C}$. 
+            
+            % diagrama do functor
+            \begin{center}
+                \begin{tikzcd}[row sep=2.5em, column sep=4em]
+                    A \arrow[r, "f"] \arrow[d, "F"'] & B\arrow[d, "F"] \\
+                    F(A) \arrow[r, "F(f)"'] & F(B)
+                \end{tikzcd}
+            \end{center}
+
+            
+            \item \textbf{Preservar identidades} \\
+            
+            Todo $A \in \mathcal{C}$ deve ter suas identidade preservadas ao serem levados para $\mathcal{D}$, de forma que $F \circ id_A (A) = id_A \circ F$.
+
+            \begin{center}
+                \begin{tikzcd}[row sep=3em, column sep=5em]
+                    A \arrow[r, "id_A"] \arrow[d, "F"'] & A \arrow[d, "F"] \\
+                    F(A) \arrow[r, "id_{F(A)}"'] & F(A)
+                \end{tikzcd}
+            \end{center}
+
+
+            \item \textbf{Preservar composições} \\
+
+            Para quaisquer $f$ e $g$ $\in \mathrm{Arr(\mathcal{C})}$, suas composições devem ser preservadas ao serem levadas para $\mathcal{D}$ pelo functor, de forma que $F(g \circ f) = F(g) \circ F(f).$
+
+            \begin{center}
+                \begin{tikzcd}[row sep=3em, column sep=4.5em]
+                    A \arrow[r, "f"] \arrow[rr, bend left = 30, "g \circ f"] \arrow[d, "F"'] & B \arrow[r, "g"] \arrow[d, "F"'] & C \arrow[d, "F"'] \\
+
+                    F(A) \arrow[r, "F(f)"'] \arrow[rr, bend right = 30, swap, "F(g \circ f)"] & F(B) \arrow[r, "F(g)"'] & F(C)
+                \end{tikzcd}
+            \end{center}
+
+            
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+
+% justificativa
+\section{PROPOSTA DE PESQUISA}
+\label{sec:tema}
+
+O Aprendizado de Máquina consolidou-se como uma das áreas mais relevantes da ciência contemporânea, sustentando aplicações em visão computacional, processamento de linguagem natural, sistemas autônomos e diversas outras frentes tecnológicas (Goodfellow \textit{et al.}, 2016). No entanto, embora seu desempenho prático seja notável, os fundamentos teóricos que descrevem o próprio processo de aprendizado ainda carecem de uma formulação matemática unificada e abstrata que permita compreender o fenômeno de forma mais profunda e geral.
+
+Domingos (2015, p. 13) expõe que, embora existam inúmeros algoritmos de aprendizado bem-sucedidos e uma forte base teórica para elucidar pesquisas na área, “não existe uma teoria unificada que explique como o aprendizado funciona de modo geral”, o que reforça a necessidade de abordagens formais capazes de compreendê-lo em termos matemáticos mais amplos. Neste contexto a proposta consiste na compreensão de tal aprendizado de modo estrutural por meio de functores diferenciais no fluxo de informação de modelos de aprendizagem — ou seja, uma tradução estruturada de uma categoria para outra:
+
+Seja $A$ o conjunto dos dados de entrada, $P$ um espaço de parâmetros e $B$ o conjunto de saída, se tomarmos uma categoria \textit{Param} como uma estrutura, onde cada morfismo é uma função parametrizada $f: A \times P \to B$, e outra \textit{Learn} a qual representa o modelo de aprendizado, podemos entender o aprendizado como um functor:
+
+\[
+Backprop: \textit{Param} \longrightarrow \textit{Learn}
+\]
+
+que mapeia as transformações parametrizadas do espaço de dados para a estrutura funcional de aprendizado, preservando (ou diferenciando) as relações que emergem do fluxo de gradiente.
+
+\subsection{JUSTIFICATIVA DO TEMA}
+Em 2017, Fong, Spivak e Tuyéras, em seu artigo \textit{Backprop as a Functor: A compositional perspective on supervised learning}, propuseram uma nova perspectiva para o aprendizado supervisionado por meio de functores, destacando a carência do aprendizado por uma estrutura que explique a transformação dos dados de forma composicional. Os autores destacam, ainda, que tal aprendizado atualmente é compreendido de modo procedural e não estrutural.
+
+A proposta, portanto, se justifica pela carência comentada na seção anterior e no fato de que a TdC surge e se destaca justamente como uma linguagem abstrata capaz de descrever e relacionar diferentes estruturas e transformações entre diferentes domínios. A pesquisa será sustentada por estudos anteriores, como de Fong \textit{et al.} (2017), formalizando suas relações e seu funcionamento de maneira rigorosa e coerente.
+
+Ao representar Modelos de Aprendizado como functores entre categorias, torna-se possível reinterpretar o aprendizado como uma transformação preservadora de estrutura, estabelecendo, portanto, uma ponte entre a matemática pura e o Aprendizado de Máquina moderno, oferecendo um quadro conceitual capaz de unificar diferentes paradigmas (supervisionado, não supervisionado e profundo) sob uma mesma estrutura teórica.
+
+% objetivos
+\subsection{OBJETIVO GERAL}
+\label{sec:obj}
+
+Considerando o contexto atual do Aprendizado de Máquina e o vocabulário abstrato da TdC, o objetivo geral desta pesquisa se resume em modelar o processo de aprendizado como um functor entre categorias de dados, formalizando o aprendizado de modo abstrato e geral para diferentes algoritmos.
+
+% objetivos especificos e metodologia proposta
+\subsection{OBJETIVOS ESPECÍFICOS E METODOLOGIA PROPOSTA}
+\label{sec:exp}
+
+Estabelecido o objetivo geral da pesquisa, considera-se os objetivos específicos abaixos para explicitar sua metodologia e seu desenvolvimento em etapas:
+
+\begin{enumerate} 
+    \begin{enumerate} 
+        
+        \item Revisar a literatura sobre a TdC, destacando aplicações em modelagem matemática e sistemas computacionais.
+        
+        \item Estudar artigos sobre a relação dos fundamentos da TdC com os fundamentos do Aprendizado de Máquina, como o de Fong \textit{et al.} (2017). 
+        
+        \item Investigar a relação entre os conceitos matemáticos já aplicados no Aprendizado de Máquina e a TdC, explorando como derivadas, gradientes e otimização podem ser descritos como functores diferenciais ou transformações naturais.
+        
+        \item Propor uma formulação categórica do aprendizado de modelos, representando-o como um functor diferenciável entre categorias.
+        
+        \item Desenvolver um algoritmo experimental que implemente, em escala reduzida, os princípios da formulação categórica proposta.
+        
+        \item Avaliar o comportamento do algoritmo em cenários controlados, verificando se a estrutura preserva, de fato, as propriedades esperadas (coerência estrutural, continuidade e estabilidade do aprendizado).
+        
+        \item Elaborar uma síntese teórica e prática dos resultados obtidos, destacando as implicações do estudo para os fundamentos matemáticos do Aprendizado de Máquina e apontando possíveis direções de continuidade.
+        
+    \end{enumerate}
+\end{enumerate}
+
+% cronogramas
+\section{CRONOGRAMA DE ATIVIDADES}
+\label{sec:atv}
+
+Os objetivos específicos desta pesquisa, descritos na seção \ref{sec:exp}, serão elaborados conforme instruções periódicas do professor orientador. O primeiro semestre de pesquisa será dedicado a estudos de conceitos teóricos, enquanto o segundo semestre será focado no desenvolvimento prático dos fundamentos estudados.
+
+% cronograma 1/2026
+\subsection{PRIMEIRO SEMESTRE DE 2026}
+\label{sec:atv1}
+
+\begin{center}
+    \begin{tabular}{c c c c c c c}
+        \hline
+        Atividade/Mês & Jan & Fev & Mar & Abr & Maio & Jun\\
+        \hline
+        (a) & x & x & & & & \\
+        (b) & & & x & x & & \\
+        (c) & & & & x & x & \\
+        (d) & & & & & x & x \\
+        \hline
+    \end{tabular}
+\end{center}
+
+% cronograma 2/2026
+\subsection{SEGUNDO SEMESTRE DE 2026}
+\label{sec:atv2}
+
+\begin{center}
+    \begin{tabular}{c c c c c c c}
+        \hline
+        Atividade/Mês & Jul & Ago & Set & Out & Nov & Dez\\
+        \hline
+        (e) & x & x & x & & & \\
+        (f) & & & x & x & x & \\
+        (g) & & & & x & x & x \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+% resultados esperado
+\section{RESULTADOS ESPERADOS}
+\label{sec:res}
+
+Conforme o desenvolvimento desta pesquisa, espera-se inicialmente estabelecer uma formulação categórica preliminar de um Modelo de Aprendizado com base na TdC, buscando uma abstração do processo de aprendizado e focando na compreensão de sua estrutura adjacente, assim como suas propriedades e possíveis variações.
+
+Diante a isso, propõe-se o desenvolvimento de um protótipo de algoritmo que implementa parcialmente essa estrutura (por exemplo, um mapeamento functorial entre dados e parâmetros). Com isso, busca-se a formulação de uma análise teórica dos resultados obtidos, discutindo propriedades diferenciais e estruturais do modelo, discutindo também os próprios resultados provenientes da pesquisa.
+
+\newpage
+
+% referencias
+
+\begin{thebibliography}{9}
+
+\bibitem{awodey2010}
+AWODEY, S. \textit{\textbf{Category Theory}}. 2. ed. \textit{Oxford: Oxford University Press}, 2010.
+
+\bibitem{domingos2015}
+DOMINGOS, P. \textit{\textbf{The Master Algorithm: How the Quest for the Ultimate Learning Machine Will Remake Our World}}. \textit{New York: Basic Books}, 2015.
+
+\bibitem{eilenberg1945}
+EILENBERG, S.; MACLANE, S. \textit{\textbf{General Theory of Natural Equivalences. Transactions of the American Mathematical Society}}, v. 58, n. 2, p. 231–294, set. 1945.
+
+\bibitem{fong2017}
+FONG, B.; SPIVAK, D. I.; TUYÉRAS, R. \textit{\textbf{Backprop as Functor: A compositional perspective on supervised learning}}. CoRR, v. abs/1711.10455, 2017. Disponível em: \url{https://arxiv.org/abs/1711.10455}. Acesso em: 11 out. 2025.
+
+\bibitem{goodfellow2016}
+GOODFELLOW, I.; BENGIO, Y.; COURVILLE, A. \textit{\textbf{Deep Learning}. Cambridge: MIT Press}, 2016.
+
+\bibitem{lensing2021}
+LENSING, J.; SPIVAK, D. I. \textit{Categorical Foundations for Gradient-Based Learning}. \textit{\textbf{arXiv preprint}}, arXiv:2103.01931, 2021.
+
+\bibitem{mariano2021}
+MARIANO, H. L.; MELEIRO, J. F. \textbf{Um Convite ao Estudo da Teoria das Categorias}. \textit{Intermaths}, v. 2, n. 2, p. 14–22, 28 dez. 2021. Disponível em: Disponível em: https://doi.org/10.22481/intermaths.v2i2.10099. Acesso em: 11 out. 2025.
+
+\bibitem{menezes}
+MENEZES, Paulo Blauth; HAEUSLER, Edward Hermann. \textbf{Teoria das categorias para ciência da computação}. Porto Alegre: Sagra Luzzatto, 2001
+
+\end{thebibliography}
+
+
+\end{document}

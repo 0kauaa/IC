@@ -1,0 +1,19 @@
+name: ic-projeto-hs
+version: 0.1.0.0
+github: "0kauaa/IC"
+license: MIT
+author: "Kauã Santana"
+maintainer: "kauassilva0023@gmail.com"
+extra-source-files:
+  - README.md
+
+dependencies:
+  - base >= 4.17 && < 5
+
+library:
+  source-dirs: src
+
+executables:
+  ic-projeto-hs-exe:
+    main: Main.hs
+    source-dirs: models
