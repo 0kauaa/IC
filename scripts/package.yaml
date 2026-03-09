@@ -7,13 +7,23 @@ maintainer: "kauassilva0023@gmail.com"
 extra-source-files:
   - README.md
 
-dependencies:
-  - base >= 4.17 && < 5
-
+# biblioteca
 library:
   source-dirs: src
+  exposed-modules:
+    - Cat
+    - Learner
+    - Params
+  dependencies:
+    - base >= 4.17 && < 5
+  ghc-options: -Wall
 
+# executáveis
 executables:
-  ic-projeto-hs-exe:
-    main: Main.hs
-    source-dirs: models
+  testes:
+    main: Testes.hs
+    source-dirs: src
+    dependencies:
+      - ic-projeto-hs
+      - base
+    ghc-options: -Wall
