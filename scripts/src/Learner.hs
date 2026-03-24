@@ -1,62 +1,64 @@
+{-# LANGUAGE DataKinds            #-}
+{-# LANGUAGE KindSignatures       #-}
+{-# LANGUAGE TypeOperators        #-}
+{-# LANGUAGE GADTs                #-}
+
 module Learner (Learner(..)) where
 
-import Cat (Cat(..))
-import Params (Params(..), dimParams, projectFirstOnes, projectOthers, unify)
+import Prelude hiding (id, (.))
+import Data.Kind      (Type)
+import Cat            (Cat(..))
+import Params         (Params(..), projectFirst, projectRest, unify)
 
-
--- Arr(Learner)
+-- morfismo parametrizado: Learner ps a b
 data Learner (ps :: [Type]) a b = Learner
     {
-        i :: Params ps -> a -> b,                  -- implement : dados p, a,    retorna b
-        u :: Params ps -> a -> b -> Params ps,     -- update    : dados p, a, b, retorna b
-        r :: Params ps -> a -> b -> a,             -- request   : dados p, a, b, retorna a
-        iniParam :: Params ps                      -- valor inicial do espaço de parâmetros
+        i        :: Params ps -> a -> b,               -- implement
+        u        :: Params ps -> a -> b -> Params ps,  -- update
+        r        :: Params ps -> a -> b -> a,          -- request
+        iniParam :: Params ps                          -- parâmetro inicial
     }
 
--- categoria Learner
 instance Cat Learner where
+
+    -- identidade: parâmetro vazio, funções identidade
     id = Learner
         {
-            i = \ParamsNull a   -> a,           -- id(I(p, a))    = a
-            u = \ParamsNull _ _ -> ParamsNull,  -- id(U(p, a, b)) = p
-            r = \ParamsNull a _ -> a,           -- id(r(p, a, b)) = a
-            iniParam = ParamsNull               -- id(P)          = p
+            i        = \ParamsNull a   -> a,
+            u        = \ParamsNull _ _ -> ParamsNull,
+            r        = \ParamsNull a _ -> a,
+            iniParam = ParamsNull
         }
 
     --  g :: Learner qs b c
     --  f :: Learner ps a b
     -- gf :: Learner (ps ++ qs) a c
-    (.) :: Learner qs b c -> Learner ps a b -> Learner (ps ++ qs) a c
-    (Learner i'' u'' r'' params'') . (Learner i' u' r' params') = Learner
+    (.) (Learner i'' u'' r'' params'') (Learner i' u' r' params') = Learner
         {
-            -- implement
+            -- implement: aplica f, depois g
             i = \params a ->
-                let p = projectFirstOnes (dimParams params') params
-                    q = projectOthers    (dimParams params') params
+                let p = projectFirst params' params'' params
+                    q = projectRest  params' params'' params
+                    b = i' p a
+                in i'' q b,
 
-                    b = i' p a  -- saida de f
-                in i'' q b,     -- g calculada com a saida de f
-
-            -- update
+            -- update: propaga gradiente de g para f
             u = \params a c ->
-                let p = projectFirstOnes (dimParams params') params
-                    q = projectOthers    (dimParams params') params
+                let p     = projectFirst params' params'' params
+                    q     = projectRest  params' params'' params
+                    b     = i'  p a
+                    q'    = u'' q b c
+                    b_req = r'' q b c
+                    p'    = u'  p a b_req
+                in unify p' q',
 
-                    b        = i'  p a
-                    q'       = u'' q b c
-                    b_req    = r'' q b c
-                    p'       = u'  p a b_req
-                in unify p' q',     -- parametros atualizados
-
-            -- request
+            -- request: propaga pedido de entrada de g para f
             r = \params a c ->
-                let p = projectFirstOnes (dimParams params') params
-                    q = projectOthers    (dimParams params') params
+                let p     = projectFirst params' params'' params
+                    q     = projectRest  params' params'' params
+                    b     = i'  p a
+                    b_req = r'' q b c
+                in r' p a b_req,
 
-                    b        = i'  p a
-                    b_req    = r'' q b c
-                    a_req    = r'  p a b_req
-                in a_req,           -- entrada atualizada
-
-        iniParam = unify params' params'' --
+            iniParam = unify params' params''
         }

@@ -1,30 +1,46 @@
-module Params (Params(..), dimParams, projectFirstOnes, projectOthers, unify) where
+{-# LANGUAGE AllowAmbiguousTypes  #-}
+{-# LANGUAGE DataKinds            #-}
+{-# LANGUAGE DerivingStrategies   #-}
+{-# LANGUAGE KindSignatures       #-}
+{-# LANGUAGE TypeFamilies         #-}
+{-# LANGUAGE TypeOperators        #-}
+{-# LANGUAGE GADTs                #-}
+{-# LANGUAGE StandaloneDeriving   #-}
+{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE FlexibleContexts     #-}
+{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE RankNTypes           #-}
+{-# LANGUAGE ScopedTypeVariables  #-}
+{-# LANGUAGE TypeApplications     #-}
 
--- extensões
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE GADTs #-}
+module Params (Params(..), type (++), projectFirst, projectRest, unify) where
 
-import Data.Kind (Type)
-import Data.List (intercalate)  
+import Prelude           hiding ((++))
+import qualified Prelude as P
+import Data.Kind          (Type)
+import Data.List          (intercalate)
+import Unsafe.Coerce      (unsafeCoerce)
+import GHC.Exts           (Any)
 
--- concatenação de type families
+-- concatenação de listas no nível de tipos
 type family (xs :: [Type]) ++ (ys :: [Type]) :: [Type] where
-    '[] ++ ys       = ys
-    (x ': xs) ++ ys = x ': (xs ++ ys)
+    '[]       ++ ys  = ys
+    (x ': xs) ++ ys  = x ': (xs ++ ys)
 
--- espaço de paremetro: elemento neutro e concatenação
+
+-- espaço de parâmetros: elemento neutro e concatenação (monóide livre)
 data Params (ps :: [Type]) where
     ParamsNull :: Params '[]
     (:::)      :: p -> Params ps -> Params (p ': ps)
-    deriving stock (Eq)
 
--- define a precedência de avaliação de (:::)
+-- precedência de (:::), mesma de (:)
 infixr 5 :::
 
--- instância Show em Params manual para facilitar debug
+-- instâncias Eq
+deriving stock instance Eq (Params '[])
+deriving stock instance (Eq p, Eq (Params ps)) => Eq (Params (p ': ps))
+
+-- instância Show
 class ShowParams ps where
     showParams :: Params ps -> [String]
 
@@ -35,28 +51,25 @@ instance (Show p, ShowParams ps) => ShowParams (p ': ps) where
     showParams (x ::: xs) = show x : showParams xs
 
 instance ShowParams ps => Show (Params ps) where
-    show xs = "[" ++ intercalate ", " (showParams xs) ++ "]"
+    show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
 
+-- projeção dos parâmetros do learner interno (retorna ps, ignora qs)
+projectFirst :: Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
+projectFirst ParamsNull    _  _    = ParamsNull
+projectFirst (_ ::: rest) qs pqs  =
+    case unsafeCoerce pqs :: Params Any of
+        ParamsNull -> unsafeCoerce ParamsNull
+        (x ::: xs) -> unsafeCoerce x ::: projectFirst rest qs (unsafeCoerce xs)
 
--- funções auxiliares para manipulação de parâmetros
--- dimensão do espaço de parâmetros
-dimParams :: Params ps -> Int
-dimParams ParamsNull = 0
-dimParams (_ ::: xs) = 1 + dimParams xs
+-- projeção dos parâmetros do learner externo (descarta ps, retorna qs)
+projectRest :: Params ps -> Params qs -> Params (ps ++ qs) -> Params qs
+projectRest ParamsNull    _  qs   = qs
+projectRest (_ ::: rest) qs pqs  =
+    case unsafeCoerce pqs :: Params Any of
+        ParamsNull -> unsafeCoerce ParamsNull
+        (_ ::: xs) -> projectRest rest qs (unsafeCoerce xs)
 
--- projeção dos primeiros n parâmetros
-projectFirstOnes :: Int -> Params ps -> Params ps
-projectFirstOnes 0 _ = ParamsNull
-projectFirstOnes _ ParamsNull = ParamsNull
-projectFirstOnes n (x ::: xs) = x ::: projectFirstOnes (n-1) xs
-
--- projeção dos demais parâmetros
-projectOthers :: Int -> Params ps -> Params ps
-projectOthers 0 xs = xs
-projectOthers _ ParamsNull = ParamsNull
-projectOthers n (_ ::: xs) = projectOthers (n-1) xs
-
--- unir duas listas de parâmetros
+-- concatenação de dois espaços de parâmetros
 unify :: Params ps -> Params qs -> Params (ps ++ qs)
-unify ParamsNull ys = ys
+unify ParamsNull  ys = ys
 unify (x ::: xs) ys = x ::: unify xs ys

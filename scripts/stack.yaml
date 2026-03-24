@@ -1,6 +1,5 @@
 resolver: ghc-9.6.7
 packages:
-- .
+  - .
 extra-deps: []
-flags: {}
 extra-package-dbs: []

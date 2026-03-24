@@ -1,29 +1,41 @@
-name: ic-projeto-hs
-version: 0.1.0.0
-github: "0kauaa/IC"
-license: MIT
-author: "Kauã Santana"
-maintainer: "kauassilva0023@gmail.com"
+name:         ic
+version:      0.1.0.0
+github:       "0kauaa/IC"
+license:      MIT
+author:       "Kauã Santana"
+maintainer:   "kauassilva0023@gmail.com"
+
 extra-source-files:
   - README.md
 
-# biblioteca
+# ── dependências globais ──
+dependencies:
+  - base >= 4.17 && < 5
+
+# ── arquivos libs ──
 library:
   source-dirs: src
   exposed-modules:
     - Cat
     - Learner
     - Params
-  dependencies:
-    - base >= 4.17 && < 5
   ghc-options: -Wall
 
-# executáveis
+# ── arquivos executaveis ──
 executables:
+
+# testes
   testes:
-    main: Testes.hs
-    source-dirs: src
+    main:        Testes.hs
+    source-dirs: test
     dependencies:
-      - ic-projeto-hs
-      - base
+      - ic
+    ghc-options: -Wall
+
+# modulos para os modelos
+  modelos:
+    main:        Main.hs
+    source-dirs: models
+    dependencies:
+      - ic
     ghc-options: -Wall
