@@ -56,46 +56,42 @@ h =
         iniParam = 4 ::: ParamsNull
     }
 
--- teste 1: identidade à esquerda (id . f = f)
-testidl :: (Eq a, Eq b, Eq (Params ps))
-        => Learner ps a b -> a -> b -> Bool
-testidl lf a b =
-    let left  = unsafeCoerce (id . lf) :: Learner ps a b
-        right = lf
-        pl    = iniParam left
-        pr    = iniParam right
-    in i left pl a    == i right pr a
-    && u left pl a b  == u right pr a b
-    && r left pl a b  == r right pr a b
-
--- teste 2: identidade à direita (f . id = f)
-testidr :: (Eq a, Eq b, Eq (Params ps))
-        => Learner ps a b -> a -> b -> Bool
-testidr lf a b =
-    let left  = unsafeCoerce (lf . id) :: Learner ps a b
-        right = lf
-        pl    = iniParam left
-        pr    = iniParam right
-    in i left pl a    == i right pr a
-    && u left pl a b  == u right pr a b
-    && r left pl a b  == r right pr a b
-
--- teste 3: associatividade (h.(g.f) = (h.g).f)
--- unsafeCoerce: (h.g).f :: Learner ((ps ++ qs) ++ rs) a d
---               h.(g.f) :: Learner (ps ++ (qs ++ rs)) a d
-testassoc :: (Eq a, Eq d, Eq (Params ((ps ++ qs) ++ rs))) => Learner ps a b -> Learner qs b c -> Learner rs c d -> a -> d -> Bool
-testassoc lf lg lh a d =
-    let left  = unsafeCoerce  ((lh . lg) . lf) :: Learner ((ps ++ qs) ++ rs) a d
-        right = unsafeCoerce  (lh . (lg . lf)) :: Learner ((ps ++ qs) ++ rs) a d
-        pl    = iniParam left
-        pr    = iniParam right
-    in i left pl a    == i right pr a
-    && u left pl a d  == u right pr a d
-    && r left pl a d  == r right pr a d
-
 main :: IO ()
 main = do
     let x = 10 :: Int
-    putStrLn $ "identidade a esquerda, entrada 10:  " ++ show (testidl f x x)
-    putStrLn $ "identidade a direita,  entrada 10:  " ++ show (testidr f x x)
-    putStrLn $ "associatividade,       entrada 10:  " ++ show (testassoc f g h x x)
+
+    -- teste 1: identidade à esquerda (id . f = f)
+    let idl    = unsafeCoerce (id . f) :: Learner '[Int] Int Int
+        pl_idl = iniParam idl
+        pr_f   = iniParam f
+    putStrLn "--- identidade à esquerda (id . f = f) ---"
+    putStrLn $ "  i (id.f) = " ++ show (i idl pl_idl x)
+    putStrLn $ "  i  f     = " ++ show (i f   pr_f   x)
+    putStrLn $ "  u (id.f) = " ++ show (u idl pl_idl x x)
+    putStrLn $ "  u  f     = " ++ show (u f   pr_f   x x)
+    putStrLn $ "  r (id.f) = " ++ show (r idl pl_idl x x)
+    putStrLn $ "  r  f     = " ++ show (r f   pr_f   x x)
+
+    -- teste 2: identidade à direita (f . id = f)
+    let idr    = unsafeCoerce (f . id) :: Learner '[Int] Int Int
+        pl_idr = iniParam idr
+    putStrLn "--- identidade à direita (f . id = f) ---"
+    putStrLn $ "  i (f.id) = " ++ show (i idr pl_idr x)
+    putStrLn $ "  i  f     = " ++ show (i f   pr_f   x)
+    putStrLn $ "  u (f.id) = " ++ show (u idr pl_idr x x)
+    putStrLn $ "  u  f     = " ++ show (u f   pr_f   x x)
+    putStrLn $ "  r (f.id) = " ++ show (r idr pl_idr x x)
+    putStrLn $ "  r  f     = " ++ show (r f   pr_f   x x)
+
+    -- teste 3: associatividade ((h.g).f = h.(g.f))
+    let hgf_l  = unsafeCoerce ((h . g) . f) :: Learner '[Int, Int, Int] Int Int
+        hgf_r  = unsafeCoerce (h . (g . f)) :: Learner '[Int, Int, Int] Int Int
+        pl_l   = iniParam hgf_l
+        pl_r   = iniParam hgf_r
+    putStrLn "--- associatividade ((h.g).f = h.(g.f)) ---"
+    putStrLn $ "  i (h.g).f = " ++ show (i hgf_l pl_l x)
+    putStrLn $ "  i  h.(g.f) = " ++ show (i hgf_r pl_r x)
+    putStrLn $ "  u (h.g).f = " ++ show (u hgf_l pl_l x x)
+    putStrLn $ "  u  h.(g.f) = " ++ show (u hgf_r pl_r x x)
+    putStrLn $ "  r (h.g).f = " ++ show (r hgf_l pl_l x x)
+    putStrLn $ "  r  h.(g.f) = " ++ show (r hgf_r pl_r x x)
