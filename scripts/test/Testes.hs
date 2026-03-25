@@ -20,7 +20,8 @@ testes empíricos das leis categoriais de Learner
 
 nota: unsafeCoerce é usado para forçar igualdades de tipos que são verdadeiras
 por construção matemática, mas que o GHC não consegue provar automaticamente,
-devido à não-injetividade da type family (++). ver relatório adjunto.
+devido à não-injetividade da type family (++). após a decisão de pureza categorial,
+isso deve mudar.
 -}
 
 -- f : '[Int] -> Int -> Int
