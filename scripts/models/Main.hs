@@ -21,4 +21,4 @@ main =
     
     in
         putStrLn $ "coêficientes da reta: " ++ show ps
-        putStrLn $ "predição para a entrada 31: " ++ show (i regressor ps 0.5)
+        putStrLn $ "predição para a entrada 31: " ++ show (i regressor ps 31.0)
