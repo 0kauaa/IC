@@ -2,8 +2,6 @@ module LinearRegressor where
 
 import Learner
 import Params
-import Distribution.Compat.Prelude (Double)
-import Distribution.PackageDescription.Check (CheckPackageContentOps)
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]
 regressor :: Learner '[Double, Double] Double Double -- Learner [w, b] x y
