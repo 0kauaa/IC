@@ -9,7 +9,7 @@ import LinearRegressor
 
 -- reta original
 f :: Double -> Double
-f x = x * 2 * x + 1 
+f x = x * 2 + 1 
 
 main :: IO ()
 main = do
