@@ -8,11 +8,11 @@ maintainer:   "kauassilva0023@gmail.com"
 extra-source-files:
   - README.md
 
-# ── dependências globais ──
+# dependências globais
 dependencies:
   - base >= 4.17 && < 5
 
-# ── arquivos libs ──
+# arquivos libs
 library:
   source-dirs: src
   exposed-modules:
@@ -21,21 +21,25 @@ library:
     - Params
   ghc-options: -Wall
 
-# ── arquivos executaveis ──
+# arquivos executaveis
 executables:
 
 # testes
-  testes:
+  test:
     main:        Testes.hs
     source-dirs: test
     dependencies:
       - ic
     ghc-options: -Wall
 
-# modulos para os modelos
-  modelos:
+# modelos
+  models:
     main:        Main.hs
     source-dirs: models
+    other-modules:
+      - LinearRegressor
+      - NormalLinearRegressor
+      - PolinomialRegressor
     dependencies:
       - ic
     ghc-options: -Wall
