@@ -8,12 +8,12 @@ import Learner (Learner(..))
 import LinearRegressor
 
 -- reta original
-line :: Double -> Double
-line x = x * 2 * x + 1 
+f :: Double -> Double
+f x = x * 2 * x + 1 
 
 main :: IO ()
 main = do
-    let pairs = [(x, line x) | x <- [1..30]]
+    let pairs = [(x, f x) | x <- [1..30]]
         p0    = iniParam regressor
         ps    = train regressor p0 pairs 30
     
