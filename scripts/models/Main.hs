@@ -13,7 +13,7 @@ f x = x * 2 + 1
 
 main :: IO ()
 main = do
-    let pairs = [(x, f x) | x <- [1..30]]
+    let pairs = [(x, f x) | x <- [1..30] :: Double]
         p0    = iniParam regressor
         ps    = train regressor p0 pairs 30
     
