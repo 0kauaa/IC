@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module LinearRegressor where
+module LinearRegressor (regressor, step, train) where
 
 import Learner
 import Params

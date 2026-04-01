@@ -38,8 +38,8 @@ executables:
     source-dirs: models
     other-modules:
       - LinearRegressor
-      - NormalLinearRegressor
-      - PolinomialRegressor
+      #- NormalLinearRegressor
+      #- PolinomialRegressor
     dependencies:
       - ic
     ghc-options: -Wall
