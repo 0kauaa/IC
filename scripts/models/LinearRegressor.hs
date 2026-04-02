@@ -6,6 +6,7 @@ module LinearRegressor (regressor, step, train) where
 
 import Learner
 import Params
+import Params (Params)
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]
 regressor :: Learner '[Double, Double] Double Double -- Learner [w, b] x y
@@ -56,3 +57,11 @@ train _     params _     0 = params
 train model params pairs n =
     let params' = foldl (step model) params pairs
     in train model params' pairs (n - 1)
+
+-- treina o modelo, mas printando os parâmetros de cada passo
+debug :: Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
+debug _     params _     0 = return ps
+debug model params pairs n = do
+    let params' = foldl (\p (x, y) -> u modelo params pairs)
+    print params'
+    debug modelo params' pairs (n - 1)
