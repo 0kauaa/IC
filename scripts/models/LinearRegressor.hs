@@ -2,11 +2,12 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module LinearRegressor (regressor, step, train) where
+module LinearRegressor (regressor, step, train, debug) where
 
 import Learner
 import Params
-import Params (Params)
+import Params()
+import Debug.Trace (traceShow)
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]
 regressor :: Learner '[Double, Double] Double Double -- Learner [w, b] x y
@@ -45,7 +46,7 @@ regressor = Learner
         iniParam = 0.0 ::: 0.0 ::: ParamsNull
 
     }
-    where ep = 0.1
+    where ep = 0.000001
 
 -- desce um passo no gradiente
 step :: Learner ps Double Double -> Params ps -> (Double, Double) -> Params ps
@@ -59,9 +60,8 @@ train model params pairs n =
     in train model params' pairs (n - 1)
 
 -- treina o modelo, mas printando os parâmetros de cada passo
-debug :: Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
-debug _     params _     0 = return params
-debug model params pairs n = do
-    let params' = foldl (\p (x, y) -> u model params pairs)
-    print params'
-    debug model params' pairs (n - 1)
+debug :: (ShowParams ps) => Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
+debug _     params _     0 = params
+debug model params pairs n =
+    let params' = foldl (step model) params pairs
+    in traceShow params' (debug model params' pairs (n - 1))

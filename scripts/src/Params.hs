@@ -13,7 +13,7 @@
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TypeApplications     #-}
 
-module Params (Params(..), type (++), projectFirst, projectRest, unify) where
+module Params (Params(..), ShowParams(..), type (++), projectFirst, projectRest, unify) where
 
 import Prelude           hiding ((++))
 import qualified Prelude as P
@@ -54,7 +54,7 @@ instance ShowParams ps => Show (Params ps) where
     show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
 
 -- projeção dos parâmetros do learner interno (retorna ps, ignora qs)
-projectFirst :: Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
+projectFirst ::  Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
 projectFirst ParamsNull    _  _    = ParamsNull
 projectFirst (_ ::: rest) qs pqs  =
     case unsafeCoerce pqs :: Params Any of
