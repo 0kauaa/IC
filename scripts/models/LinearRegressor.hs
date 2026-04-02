@@ -62,6 +62,6 @@ train model params pairs n =
 debug :: Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
 debug _     params _     0 = return ps
 debug model params pairs n = do
-    let params' = foldl (\p (x, y) -> u modelo params pairs)
+    let params' = foldl (\p (x, y) -> u model params pairs)
     print params'
     debug model params' pairs (n - 1)
