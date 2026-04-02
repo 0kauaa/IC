@@ -64,4 +64,4 @@ debug _     params _     0 = return ps
 debug model params pairs n = do
     let params' = foldl (\p (x, y) -> u modelo params pairs)
     print params'
-    debug modelo params' pairs (n - 1)
+    debug model params' pairs (n - 1)
