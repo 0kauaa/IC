@@ -60,7 +60,7 @@ train model params pairs n =
 
 -- treina o modelo, mas printando os parâmetros de cada passo
 debug :: Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
-debug _     params _     0 = return ps
+debug _     params _     0 = return params
 debug model params pairs n = do
     let params' = foldl (\p (x, y) -> u model params pairs)
     print params'
