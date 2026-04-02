@@ -5,7 +5,6 @@
 module LinearRegressor (regressor, step, train, debug) where
 
 import Learner
-import Params
 import Params()
 import Debug.Trace (traceShow)
 
