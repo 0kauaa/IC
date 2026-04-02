@@ -15,7 +15,7 @@ main :: IO ()
 main = do
     let pairs = [(x, f x) | x <- [1..30] :: [Double]]
         p0    = iniParam regressor
-        ps    = debug regressor p0 pairs 30
+        ps    = debug regressor p0 pairs 1000
     
     putStrLn $ "coeficientes da reta: " ++ show ps
     putStrLn $ "predicao para a entrada 31: " ++ show (i regressor ps 31.0)

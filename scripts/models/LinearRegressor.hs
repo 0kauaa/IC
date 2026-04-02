@@ -5,7 +5,7 @@
 module LinearRegressor (regressor, step, train, debug) where
 
 import Learner
-import Params()
+import Params
 import Debug.Trace (traceShow)
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]
