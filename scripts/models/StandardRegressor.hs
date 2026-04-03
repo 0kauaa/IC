@@ -17,7 +17,7 @@ standardlizer mu sigma = Learner
     {
         -- padronização
         i = \ParamsNull x   -> (x - mu) / sigma,
-        -- não parametrizado 
+        -- sem peso 
         u = \ParamsNull _ _ -> ParamsNull,
         -- gradiente da entrada 
         r = \ParamsNull _ z -> z / sigma, -- dE/dx = z * 1/sigma = z/sigma
