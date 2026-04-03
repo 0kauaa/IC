@@ -1,5 +1,5 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE GADTs #-}
+{-# LANGUAGE DataKinds    #-}
+{-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module LinearRegressor (regressor, step, train, debug) where
@@ -45,7 +45,7 @@ regressor = Learner
         iniParam = 0.0 ::: 0.0 ::: ParamsNull
 
     }
-    where ep = 0.000001
+    where ep = 0.000005
 
 -- desce um passo no gradiente
 step :: Learner ps Double Double -> Params ps -> (Double, Double) -> Params ps

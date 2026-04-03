@@ -38,7 +38,7 @@ executables:
     source-dirs: models
     other-modules:
       - LinearRegressor
-      #- NormalLinearRegressor
+      - StandardRegressor
       #- PolinomialRegressor
     dependencies:
       - ic
