@@ -24,7 +24,7 @@ standardlizer mu sigma = Learner
         iniParam = ParamsNull
     }
 
--- learner regressor normalizado = zrl(mu, sigma, [p], x, y)
+-- learner regressor normalizado = rl(p, z(x), z(y)), com z(x) = (x - mu) / sigma
 standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
 standardlizedRegressor mu sigma = regressor . standardlizer mu sigma
 

@@ -33,12 +33,12 @@ stddev [] = 0
 stddev xs =
     let avg      = mean xs        
         n        = fromIntegral (length xs)        
-        variance = sum (map (\x -> (x - avg) ^ 2) xs) / (n - 1)    
+        variance = sum (map (\x -> (x - avg) ^ (2 :: Int)) xs) / (n - 1)    
     in sqrt variance
     
 main :: IO ()
 main = do    
-    let pairs  = d       
+    let pairs  = d
         mu     = mean   (map fst pairs)        
         sigma  = stddev (map fst pairs)         
                
