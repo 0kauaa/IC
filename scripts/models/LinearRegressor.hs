@@ -45,7 +45,7 @@ regressor = Learner
         iniParam = 0.0 ::: 0.0 ::: ParamsNull
 
     }
-    where ep = 1
+    where ep = 0.01
 
 -- desce um passo no gradiente
 step :: Learner ps Double Double -> Params ps -> (Double, Double) -> Params ps
