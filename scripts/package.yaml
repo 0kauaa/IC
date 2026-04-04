@@ -15,31 +15,60 @@ dependencies:
 # arquivos libs
 library:
   source-dirs: src
+
+  # api global
   exposed-modules:
     - Cat
     - Learner
     - Params
-  ghc-options: -Wall
+    - Models.LinearRegressor
+    - Models.PolynomialRegressor
+    - Models.StandardRegressor
+
+  ghc-options:
+    - -Wall
 
 # arquivos executaveis
 executables:
 
-# testes
-  test:
-    main:        Testes.hs
-    source-dirs: test
+# regressor linear
+  linear-regressor:
+    main: Main.hs
+    source-dirs:
+      - app/linear-regressor
     dependencies:
       - ic
-    ghc-options: -Wall
+    ghc-options:
+      - -Wall
 
-# modelos
-  models:
-    main:        Main.hs
-    source-dirs: models
-    other-modules:
-      - LinearRegressor
-      - StandardRegressor
-      #- PolinomialRegressor
+# regressor padronizado
+  standard-regressor:
+    main: Main.hs
+    source-dirs:
+      - app/standard-regressor
     dependencies:
       - ic
-    ghc-options: -Wall
+    ghc-options:
+      - -Wall
+
+  # regressor polinomial
+  polynomial-regressor:
+    main:        Main.hs
+    source-dirs:
+      - app/polynomial-regressor
+    dependencies:
+      - ic
+    ghc-options:
+      - -Wall
+
+# testes
+tests:
+
+  test:
+    main: Testes.hs
+    source-dirs:
+      - test
+    dependencies:
+      - ic
+    ghc-options:
+      - -Wall

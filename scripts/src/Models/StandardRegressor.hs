@@ -2,13 +2,13 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module StandardRegressor (standardlizedRegressor, step, train, debug) where
+module Models.StandardRegressor (standardlizedRegressor, step, train, debug) where
 
 import Prelude hiding (id, (.))
 import Cat (Cat(..))
 import Params
 import Learner
-import LinearRegressor (regressor)
+import Models.LinearRegressor (regressor)
 import Debug.Trace (traceShow)
 
 -- padronização zscore
