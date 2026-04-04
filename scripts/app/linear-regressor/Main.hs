@@ -5,7 +5,7 @@ module Main where
 
 import Params()
 import Learner (Learner(..))
-import Models.LinearRegressor (regressor, step, train, debug)
+import Models.LinearRegressor (linearRegressor, step, train, debug)
 
 d :: [(Double, Double)]
 d = [(1.0,3.0),(1.3,3.1),     
@@ -25,7 +25,7 @@ d = [(1.0,3.0),(1.3,3.1),
 main :: IO ()
 main = do
     let pairs = d
-        model = regressor
+        model = linearRegressor
         p0    = iniParam model        
         ps    = train model p0 pairs 1000    
     putStrLn $ "coeficientes da reta: " ++ show ps    

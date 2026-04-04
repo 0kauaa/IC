@@ -8,7 +8,7 @@ import Prelude hiding (id, (.))
 import Cat (Cat(..))
 import Params
 import Learner
-import Models.LinearRegressor (regressor)
+import Models.LinearRegressor (linearRegressor)
 import Debug.Trace (traceShow)
 
 -- padronização zscore
@@ -26,7 +26,7 @@ standardlizer mu sigma = Learner
 
 -- learner regressor normalizado = rl(p, z(x), z(y)), com z(x) = (x - mu) / sigma
 standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
-standardlizedRegressor mu sigma = regressor . standardlizer mu sigma
+standardlizedRegressor mu sigma = linearRegressor . standardlizer mu sigma
 
 -- desce um passo no gradiente (mesmo da regressão simples)
 step :: Learner ps Double Double -> Params ps -> (Double, Double) -> Params ps

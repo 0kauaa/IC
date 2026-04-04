@@ -2,15 +2,15 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.LinearRegressor (regressor, step, train, debug) where
+module Models.LinearRegressor (linearRegressor, step, train, debug) where
 
 import Learner
 import Params
 import Debug.Trace (traceShow)
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]
-regressor :: Learner '[Double, Double] Double Double -- Learner [w, b] x y
-regressor = Learner
+linearRegressor :: Learner '[Double, Double] Double Double -- Learner [w, b] x y
+linearRegressor = Learner
     {
         -- implementa uma reta
         i = \(w ::: b ::: ParamsNull) x ->
