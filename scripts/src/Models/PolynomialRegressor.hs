@@ -1,7 +1,9 @@
 module Models.PolynomialRegressor where
 
-import Prelude hiding (id, (.))
-import Core.Cat (id, (.))
+{-module Models.PolynomialRegressor (polynomialRegressor) where
+
+import Prelude hiding         (id, (.))
+import Core.Cat               (id, (.))
 import Core.Params
 import Core.Learner
 import Models.LinearRegressor (linearRegressor)
@@ -21,3 +23,4 @@ polynomialAdjuster = Learner
 
 polynomialRegressor :: Learner '[Double, Double] Double Double
 polynomialRegressor = linearRegressor . polynomial
+-}

@@ -6,7 +6,7 @@ module Main where
 import Core.Params()
 import Core.Learner             (Learner(..))
 import Models.StandardRegressor (standardlizedRegressor)
-import Training.Training        (setp, train, debug)
+import Training.Training        (step, train, debug)
 
 d :: [(Double, Double)]
 d = [(1.0,3.0),(1.3,3.1),     

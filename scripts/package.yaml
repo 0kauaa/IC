@@ -25,7 +25,7 @@ library:
     
     # modelos
     - Models.LinearRegressor
-    - Models.PolynomialRegressor
+    #- Models.PolynomialRegressor
     - Models.StandardRegressor
 
     # treinamento
@@ -58,14 +58,14 @@ executables:
       - -Wall
 
   # regressor polinomial
-  polynomial-regressor:
-    main: Main.hs
-    source-dirs:
-      - app/polynomial-regressor
-    dependencies:
-      - ic
-    ghc-options:
-      - -Wall
+  #polynomial-regressor:
+  #  main: Main.hs
+  #  source-dirs:
+  #    - app/polynomial-regressor
+  #  dependencies:
+  #    - ic
+  #  ghc-options:
+  #    - -Wall
 
 # testes
 tests:
