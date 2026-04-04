@@ -1,15 +1,13 @@
-module Models.PolynomialRegressor where
+module Models.PolynomialRegressor (polynomialRegressor) where
 
-{-module Models.PolynomialRegressor (polynomialRegressor) where
-
-import Prelude hiding         (id, (.))
-import Core.Cat               (id, (.))
+import Prelude hiding           (id, (.))
+import Core.Cat                 (id, (.))
 import Core.Params
 import Core.Learner
-import Models.LinearRegressor (linearRegressor)
+import Models.StandardRegressor (standardlizedRegressor)
 
 -- ajuste polinomial
-polynomialAdjuster :: Learner '[Double, Double] Double Double
+polynomialAdjuster :: Learner '[] Double Double
 polynomialAdjuster = Learner
     {
         -- ajuste quadratico
@@ -21,6 +19,5 @@ polynomialAdjuster = Learner
         iniParam = ParamsNull
     }
 
-polynomialRegressor :: Learner '[Double, Double] Double Double
-polynomialRegressor = linearRegressor . polynomial
--}
+polynomialRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
+polynomialRegressor mu sigma = standardlizedRegressor mu sigma . polynomialAdjuster

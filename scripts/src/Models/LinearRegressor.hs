@@ -44,4 +44,4 @@ linearRegressor = Learner
         iniParam = 0.0 ::: 0.0 ::: ParamsNull
 
     }
-    where ep = 0.01
+    where ep = 0.0008

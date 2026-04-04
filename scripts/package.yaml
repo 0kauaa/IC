@@ -16,6 +16,12 @@ dependencies:
 library:
   source-dirs: src
 
+  # extensões comuns
+  default-extensions:
+   - DataKinds
+   - TypeOperators
+   - GADTs
+
   # api global
   exposed-modules:
     # core
@@ -25,11 +31,15 @@ library:
     
     # modelos
     - Models.LinearRegressor
-    #- Models.PolynomialRegressor
+    - Models.PolynomialRegressor
     - Models.StandardRegressor
 
     # treinamento
     - Training.Training
+
+    # dados
+    - Data.Synthetic.Linear
+    - Data.Synthetic.Polynomial
 
   ghc-options:
     - -Wall
@@ -58,14 +68,14 @@ executables:
       - -Wall
 
   # regressor polinomial
-  #polynomial-regressor:
-  #  main: Main.hs
-  #  source-dirs:
-  #    - app/polynomial-regressor
-  #  dependencies:
-  #    - ic
-  #  ghc-options:
-  #    - -Wall
+  polynomial-regressor:
+    main: Main.hs
+    source-dirs:
+      - app/polynomial-regressor
+    dependencies:
+      - ic
+    ghc-options:
+      - -Wall
 
 # testes
 tests:
