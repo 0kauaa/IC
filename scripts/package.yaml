@@ -18,9 +18,12 @@ library:
 
   # api global
   exposed-modules:
-    - Cat
-    - Learner
-    - Params
+    # core
+    - Core.Cat
+    - Core.Learner
+    - Core.Params
+    
+    # modelos
     - Models.LinearRegressor
     - Models.PolynomialRegressor
     - Models.StandardRegressor
@@ -53,7 +56,7 @@ executables:
 
   # regressor polinomial
   polynomial-regressor:
-    main:        Main.hs
+    main: Main.hs
     source-dirs:
       - app/polynomial-regressor
     dependencies:

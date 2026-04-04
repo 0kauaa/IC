@@ -2,11 +2,11 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE PolyKinds     #-}
 
-module Cat (Cat(..)) where
+module Core.Cat (Cat(..)) where
 
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)
-import Params         (type (++))
+import Core.Params         (type (++))
 
 class Cat (cat :: [Type] -> Type -> Type -> Type) where
     id  :: cat '[] a a

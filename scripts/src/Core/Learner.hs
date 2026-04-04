@@ -3,12 +3,12 @@
 {-# LANGUAGE TypeOperators        #-}
 {-# LANGUAGE GADTs                #-}
 
-module Learner (Learner(..)) where
+module Core.Learner (Learner(..)) where
 
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)
-import Cat            (Cat(..))
-import Params         (Params(..), projectFirst, projectRest, unify)
+import Core.Cat            (Cat(..))
+import Core.Params         (Params(..), projectFirst, projectRest, unify)
 
 -- morfismo parametrizado: Learner ps a b
 data Learner (ps :: [Type]) a b = Learner

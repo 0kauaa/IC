@@ -13,7 +13,7 @@
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TypeApplications     #-}
 
-module Params (Params(..), ShowParams(..), type (++), projectFirst, projectRest, unify) where
+module Core.Params (Params(..), ShowParams(..), type (++), projectFirst, projectRest, unify) where
 
 import Prelude           hiding ((++))
 import qualified Prelude as P
