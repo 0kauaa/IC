@@ -28,6 +28,9 @@ library:
     - Models.PolynomialRegressor
     - Models.StandardRegressor
 
+    # treinamento
+    - Training.Training
+
   ghc-options:
     - -Wall
 

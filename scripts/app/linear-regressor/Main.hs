@@ -5,7 +5,8 @@ module Main where
 
 import Core.Params()
 import Core.Learner           (Learner(..))
-import Models.LinearRegressor (linearRegressor, step, train, debug)
+import Models.LinearRegressor (linearRegressor)
+import Training.Training      (step, train, debug)
 
 d :: [(Double, Double)]
 d = [(1.0,3.0),(1.3,3.1),     

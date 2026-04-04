@@ -2,14 +2,13 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.StandardRegressor (standardlizedRegressor, step, train, debug) where
+module Models.StandardRegressor (standardlizedRegressor) where
 
 import Prelude hiding         (id, (.))
 import Core.Cat               (Cat(..))
 import Core.Params
 import Core.Learner
 import Models.LinearRegressor (linearRegressor)
-import Debug.Trace            (traceShow)
 
 -- padronização zscore
 standardlizer :: Double -> Double -> Learner '[] Double Double
@@ -27,21 +26,3 @@ standardlizer mu sigma = Learner
 -- learner regressor normalizado = rl(p, z(x), z(y)), com z(x) = (x - mu) / sigma
 standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
 standardlizedRegressor mu sigma = linearRegressor . standardlizer mu sigma
-
--- desce um passo no gradiente (mesmo da regressão simples)
-step :: Learner ps Double Double -> Params ps -> (Double, Double) -> Params ps
-step model params (x, y) = u model params x y
-
--- desce o gradiente em n passos (mesmo da regressão simples)
-train :: Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
-train _     params _     0 = params
-train model params pairs n =
-    let params' = foldl (step model) params pairs
-    in train model params' pairs (n - 1)
-
--- treina o modelo, mas printando os parâmetros de cada passo
-debug :: ShowParams ps => Learner ps Double Double -> Params ps -> [(Double, Double)] -> Int -> Params ps
-debug _     params _     0 = params
-debug model params pairs n =
-    let params' = foldl (step model) params pairs
-    in traceShow params' (debug model params' pairs (n - 1))
