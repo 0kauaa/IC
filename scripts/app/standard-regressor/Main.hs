@@ -3,8 +3,8 @@
 
 module Main where
 
-import Params()
-import Learner (Learner(..))
+import Core.Params()
+import Core.Learner (Learner(..))
 import Models.StandardRegressor (standardlizedRegressor, step, train, debug)
 
 d :: [(Double, Double)]

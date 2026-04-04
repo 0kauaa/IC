@@ -4,8 +4,8 @@
 
 module Models.LinearRegressor (linearRegressor, step, train, debug) where
 
-import Learner
-import Params
+import Core.Learner
+import Core.Params
 import Debug.Trace (traceShow)
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]

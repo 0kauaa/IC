@@ -5,9 +5,9 @@
 module Models.StandardRegressor (standardlizedRegressor, step, train, debug) where
 
 import Prelude hiding (id, (.))
-import Cat (Cat(..))
-import Params
-import Learner
+import Core.Cat (Cat(..))
+import Core.Params
+import Core.Learner
 import Models.LinearRegressor (linearRegressor)
 import Debug.Trace (traceShow)
 
