@@ -4,7 +4,7 @@
 module Main where
 
 import Core.Params()
-import Core.Learner (Learner(..))
+import Core.Learner           (Learner(..))
 import Models.LinearRegressor (linearRegressor, step, train, debug)
 
 d :: [(Double, Double)]

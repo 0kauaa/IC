@@ -4,12 +4,12 @@
 
 module Models.StandardRegressor (standardlizedRegressor, step, train, debug) where
 
-import Prelude hiding (id, (.))
-import Core.Cat (Cat(..))
+import Prelude hiding         (id, (.))
+import Core.Cat               (Cat(..))
 import Core.Params
 import Core.Learner
 import Models.LinearRegressor (linearRegressor)
-import Debug.Trace (traceShow)
+import Debug.Trace            (traceShow)
 
 -- padronização zscore
 standardlizer :: Double -> Double -> Learner '[] Double Double
