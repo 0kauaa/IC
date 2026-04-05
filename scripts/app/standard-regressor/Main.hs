@@ -2,7 +2,7 @@ module Main where
 
 import Core.Params()
 import Core.Learner             (Learner(..))
-import Models.StandardRegressor (standardlizedRegressor)
+import Models.StandardRegressor (standardlizedRegressor, interpret)
 import Training.Training        (step, train, debug)
 import Data.Synthetic.Linear    (data_2_1)
 
@@ -28,12 +28,7 @@ main = do
                
         model  = standardlizedRegressor mu sigma        
         p0     = iniParam model        
-        ps     = debug model p0 pairs 10
-    {-    
-    obs.: os parametros mostrados não são normalizadados          
-          fica como a fazer, após a publicação do primeiro artigo, uma função 'fromParams' para conversão Params -> Double,
-          para possibilitar a normalização dos aprâmetros.    
-    -}
-    
-    putStrLn $ "coeficientes da reta (sem normalização): " ++ show ps ++ "\nmedia: " ++ show mu ++ ", desvio padrao: " ++ show sigma    
+        ps     = debug model p0 pairs 1000
+
+    putStrLn $ "coeficientes da reta: " ++ show (interpret mu sigma ps) ++ "\nmedia: " ++ show mu ++ ", desvio padrao: " ++ show sigma    
     putStrLn $ "predicao para a entrada 17: " ++ show (i model ps 17)

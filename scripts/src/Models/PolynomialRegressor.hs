@@ -1,10 +1,11 @@
 module Models.PolynomialRegressor (polynomialRegressor) where
 
-import Prelude hiding           (id, (.))
-import Core.Cat                 (id, (.))
-import Core.Params
+import Prelude hiding           ((.))
+import Core.Cat                 ((.))
+import Core.Params              (Params(..))
 import Core.Learner
-import Models.StandardRegressor (standardlizedRegressor)
+import Models.StandardRegressor (standardlizer)
+import Models.LinearRegressor   (linearRegressor)
 
 -- ajuste polinomial
 polynomialAdjuster :: Learner '[] Double Double
@@ -20,4 +21,4 @@ polynomialAdjuster = Learner
     }
 
 polynomialRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
-polynomialRegressor mu sigma = standardlizedRegressor mu sigma . polynomialAdjuster
+polynomialRegressor mu sigma = linearRegressor . standardlizer mu sigma . polynomialAdjuster

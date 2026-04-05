@@ -2,11 +2,11 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.StandardRegressor (standardlizedRegressor) where
+module Models.StandardRegressor (standardlizedRegressor, standardlizer, interpret) where
 
-import Prelude hiding         (id, (.))
-import Core.Cat               (Cat(..))
-import Core.Params
+import Prelude hiding         ((.))
+import Core.Cat               ((.))
+import Core.Params            (Params(..))
 import Core.Learner
 import Models.LinearRegressor (linearRegressor)
 
@@ -19,10 +19,17 @@ standardlizer mu sigma = Learner
         -- sem peso 
         u = \ParamsNull _ _ -> ParamsNull,
         -- gradiente da entrada 
-        r = \ParamsNull _ z -> z / sigma, -- dE/dx = z * 1/sigma = z/sigma
+        r = \ParamsNull _ z -> z / sigma,    -- de/dx = z * 1/sigma = z/sigma
         iniParam = ParamsNull
     }
 
 -- learner regressor normalizado = rl(p, z(x), z(y)), com z(x) = (x - mu) / sigma
 standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
 standardlizedRegressor mu sigma = linearRegressor . standardlizer mu sigma
+
+-- remove parâmetros aprendidos do espaço normalizado
+interpret :: Double -> Double -> Params '[Double, Double] -> Params '[Double, Double]
+interpret mu sigma (w ::: b ::: ParamsNull) = 
+    let w' = (w / sigma) 
+        b' = b - (w * mu) / sigma
+    in w' ::: b' ::: ParamsNull

@@ -5,7 +5,7 @@
 module Models.LinearRegressor(linearRegressor) where
 
 import Core.Learner
-import Core.Params
+import Core.Params  (Params(..))
 
 -- learner regressor linear = rl([p], x, y), onde [p] = [{w, b}]
 linearRegressor :: Learner '[Double, Double] Double Double -- Learner [w, b] x y
@@ -44,4 +44,4 @@ linearRegressor = Learner
         iniParam = 0.0 ::: 0.0 ::: ParamsNull
 
     }
-    where ep = 0.0008
+    where ep = 0.001

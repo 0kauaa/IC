@@ -1,10 +1,11 @@
 module Main where
 
-import Core.Params
+import Core.Params                (Params(..))
 import Core.Learner               (Learner(..))
+import Models.StandardRegressor   (interpret)
 import Models.PolynomialRegressor (polynomialRegressor)
 import Training.Training          (step, train, debug)
-import Data.Synthetic.Polynomial  (data_03_3)
+import Data.Synthetic.Polynomial  (data_03_3neg)
 
 -- média
 mean :: [Double] -> Double
@@ -22,12 +23,13 @@ stddev xs =
 
 main :: IO ()
 main = do
-    let pairs = data_03_3
-        mu    = mean   (map fst pairs)        
-        sigma = stddev (map fst pairs)  
+    let pairs = data_03_3neg
+        xs2   = map (\(x, _) -> x*x) pairs -- os parâmetros de padronização devem ser dos dados quadrados
+        mu    = mean   xs2
+        sigma = stddev xs2  
 
         model = polynomialRegressor mu sigma
         p0    = iniParam model
-        ps    = debug model p0 pairs 2000
-    putStrLn $ "coeficientes da do polinomio: " ++ show ps    
+        ps    = debug model p0 pairs 200
+    putStrLn $ "coeficientes da do polinomio: " ++ show (interpret mu sigma ps)
     putStrLn $ "predicao para a entrada 20: " ++ show (i model ps 20.0)

@@ -36,10 +36,6 @@ data Params (ps :: [Type]) where
 -- precedência de (:::), mesma de (:)
 infixr 5 :::
 
--- talvez seja melhor tirar, ja que nao vamos fazer comparação...
--- instâncias Eq
-deriving stock instance Eq (Params '[])
-deriving stock instance (Eq p, Eq (Params ps)) => Eq (Params (p ': ps))
 
 -- instância Show
 class ShowParams ps where
@@ -53,11 +49,6 @@ instance (Show p, ShowParams ps) => ShowParams (p ': ps) where
 
 instance ShowParams ps => Show (Params ps) where
     show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
-{-
-obs.:
-fica como a fazer, apóes a publicação do primeiro artigo, uma função fromParams para conversão Params -> Double
-talvez algo que aproveite a instancia Show e faça algo como Params -> String -> Double
--}
 
 
 -- projeção dos parâmetros do learner interno (retorna ps, ignora qs)
