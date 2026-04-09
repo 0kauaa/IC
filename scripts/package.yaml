@@ -33,6 +33,7 @@ library:
     - Models.LinearRegressor
     - Models.PolynomialRegressor
     - Models.StandardRegressor
+    - Models.LogisticRegressor
 
     # treinamento
     - Training.Training
@@ -40,6 +41,7 @@ library:
     # dados
     - Data.Synthetic.Linear
     - Data.Synthetic.Polynomial
+    - Data.Synthetic.Classified
 
   ghc-options:
     - -Wall
