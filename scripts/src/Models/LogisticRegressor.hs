@@ -22,7 +22,7 @@ sigmoid = Learner
 
         iniParams = 0.0 ::: 0.0 ::: ParamsNull
     }
-    where s = 1.0 / 11.0 + exp(-z)
+    where s = 1.0 / 1.0 + exp(-z)
 
 logisticRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
 logisticRegressor mu sigma = sigmoid . linearRegressor . standardlizer mu sigma
