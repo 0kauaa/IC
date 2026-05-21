@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.StandardRegressor (standardlizedRegressor, standardlizer, interpret) where
+module Models.StandardRegressor (standardlizedRegressor, standardlizer, interpret, mean, stddev) where
 
 import Prelude hiding         ((.))
 import Core.Cat               ((.))
@@ -23,13 +23,11 @@ standardlizer mu sigma = Learner
         iniParam = ParamsNull
     }
 
--- learner regressor normalizado = rl(p, z(x), z(y)), com z(x) = (x - mu) / sigma
-standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
-standardlizedRegressor mu sigma = linearRegressor . standardlizer mu sigma
-
--- remove parâmetros aprendidos do espaço normalizado
-interpret :: Double -> Double -> Params '[Double, Double] -> Params '[Double, Double]
-interpret mu sigma (w ::: b ::: ParamsNull) = 
-    let w' = (w / sigma) 
-        b' = b - (w * mu) / sigma
-    in w' ::: b' ::: ParamsNull
+-- desvio padrao amostral
+stddev :: [Double] -> Double
+stddev [] = 0
+stddev xs =
+    let avg      = mean xs        
+        n        = fromIntegral (length xs)        
+        variance = sum (map (\x -> (x - avg) ^ (2 :: Int)) xs) / (n - 1)    
+    in sqrt variance

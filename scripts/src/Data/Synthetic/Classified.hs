@@ -1,6 +1,6 @@
 module Data.Synthetic.Classified where
 
-data_0_1 :: [(Double), (Double)]
+data_0_1 :: [(Double, Double)]
 data_0_1 =
   [ (-1.72, 0)
   , (-0.95, 0)

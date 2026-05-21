@@ -2,23 +2,10 @@ module Main where
 
 import Core.Params()
 import Core.Learner             (Learner(..))
+import Core.Utils               (mean, stddev)
 import Models.StandardRegressor (standardlizedRegressor, interpret)
 import Training.Training        (step, train, debug)
 import Data.Synthetic.Linear    (data_2_1)
-
--- média
-mean :: [Double] -> Double
-mean [] = 0
-mean xs = sum xs / fromIntegral (length xs)
-
--- desvio padrao amostral
-stddev :: [Double] -> Double
-stddev [] = 0
-stddev xs =
-    let avg      = mean xs        
-        n        = fromIntegral (length xs)        
-        variance = sum (map (\x -> (x - avg) ^ (2 :: Int)) xs) / (n - 1)    
-    in sqrt variance
     
 main :: IO ()
 main = do    
