@@ -5,9 +5,6 @@ license:      MIT
 author:       "Kauã Santana"
 maintainer:   "kauassilva0023@gmail.com"
 
-extra-source-files:
-  - README.md
-
 # dependências globais
 dependencies:
   - base >= 4.17 && < 5
@@ -28,6 +25,7 @@ library:
     - Core.Cat
     - Core.Learner
     - Core.Params
+    - Core.Utils
     
     # modelos
     - Models.LinearRegressor

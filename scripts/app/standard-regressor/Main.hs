@@ -2,8 +2,7 @@ module Main where
 
 import Core.Params()
 import Core.Learner             (Learner(..))
-import Core.Utils               (mean, stddev)
-import Models.StandardRegressor (standardlizedRegressor, interpret)
+import Core.Utils               (mean, stddev, standardlizedRegressor, interpret)
 import Training.Training        (step, train, debug)
 import Data.Synthetic.Linear    (data_2_1)
     

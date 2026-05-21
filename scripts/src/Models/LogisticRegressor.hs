@@ -5,23 +5,23 @@ import Core.Cat                 ((.))
 import Core.Params              (Params(..))
 import Core.Learner             (Learner(..))
 import Models.LinearRegressor   (linearRegressor)
-import Models.StandardRegressor (standarlizer)
+import Models.StandardRegressor (standardlizer)
 
 sigmoid :: Learner '[] Double Double
 sigmoid = Learner
     {
         -- implementa a sigmoid
-        i = \ParamsNull z _ -> 1.0 / (1.0 + exp(-z)),
+        i = \ParamsNull z -> 1.0 / (1.0 + exp (-z)),
 
         -- não parâmetrizado
         u = \ParamsNull _ _ -> ParamsNull,
 
         -- derivada do erro em relação à entrada (σ')
-        r = \ParamsNull _ _ -> 
-            let s = 1.0 / (1.0 + exp (-z))
+        r = \ParamsNull x _ -> 
+            let s = 1.0 / (1.0 + exp (-x))
             in s * (1.0 - s),
 
-        iniParams = ParamsNull
+        iniParam = ParamsNull
     }
 
 logisticRegressor :: Double -> Double -> Learner '[Double, Double] Double Double

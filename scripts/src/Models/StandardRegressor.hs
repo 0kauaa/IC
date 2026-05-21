@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.StandardRegressor (standardlizedRegressor, standardlizer, interpret, mean, stddev) where
+module Models.StandardRegressor (standardlizer) where
 
 import Prelude hiding         ((.))
 import Core.Cat               ((.))
@@ -23,11 +23,3 @@ standardlizer mu sigma = Learner
         iniParam = ParamsNull
     }
 
--- desvio padrao amostral
-stddev :: [Double] -> Double
-stddev [] = 0
-stddev xs =
-    let avg      = mean xs        
-        n        = fromIntegral (length xs)        
-        variance = sum (map (\x -> (x - avg) ^ (2 :: Int)) xs) / (n - 1)    
-    in sqrt variance
