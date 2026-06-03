@@ -1,4 +1,4 @@
-# Stack / Cabal
+# stack n cabal stuffs
 .stack-work/
 dist-newstyle/
 *.cabal.lock
@@ -6,10 +6,13 @@ dist-newstyle/
 *.hi
 *.o
 
-# Sistema
+# system
 .DS_Store
 Thumbs.db
 
-# Arquivos temporários de editores
+# temp files
 *~
 *.swp
+
+# my stuffs
+ideas.md
