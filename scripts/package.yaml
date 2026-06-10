@@ -77,6 +77,16 @@ executables:
     ghc-options:
       - -Wall
 
+  # regressor logistico
+  logistic-regressor:
+    main: Main.hs
+    source-dirs:
+      - app/logistic-regressor
+    dependencies:
+      - ic
+    ghc-options:
+    - -Wall
+
 # testes
 tests:
 

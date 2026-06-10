@@ -2,7 +2,7 @@ module Main where
 
 import Core.Params()
 import Core.Learner              (Learner(..))
-import Core.Utils                (mean, stddev)
+import Core.Utils                (mean, stddev, interpret)
 import Models.LogisticRegressor  (logisticRegressor)
 import Training.Training         (step, train, debug)
 import Data.Synthetic.Classified (data_0_1)
@@ -10,8 +10,11 @@ import Data.Synthetic.Classified (data_0_1)
 main :: IO ()
 main = do
     let pairs = data_0_1
-        model = logisticRegressor
-        p0    = iniParam model    
+        mu    = mean   (map fst pairs)
+        sigma = stddev (map fst pairs)
+        
+        model = logisticRegressor mu sigma
+        p0    = iniParam model
         ps    = train model p0 pairs 1000
-    putStrLn $ "coeficientes de classificacao: " ++ show ps
-    putStrLn $ "predicao para a entrada 17: " ++ show (i model ps 0.0)
+
+    putStrLn $ "predicao para a entrada 1.2 (1): " ++ show (i model ps 1.2)
