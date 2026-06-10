@@ -2,9 +2,9 @@ module Main where
 
 import Core.Params()
 import Core.Learner              (Learner(..))
-import Core.Utils                (mean, stddev, interpret)
+import Core.Utils                (mean, stddev)
 import Models.LogisticRegressor  (logisticRegressor)
-import Training.Training         (step, train, debug)
+import Training.Training         (train)
 import Data.Synthetic.Classified (data_0_1)
 
 main :: IO ()
