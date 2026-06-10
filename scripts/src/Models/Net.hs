@@ -9,16 +9,16 @@ import Core.Params    (Params(..))
 relu :: Learner '[] Double Double
 relu = Learner
     {
-        i = \(ParamsNull x) -> 
+        i = \ParamsNull  x -> 
             max 0 x,
         
-        u = \(ParamsNull _ _) ->
+        u = \ParamsNull _ _ ->
             ParamsNull,
         
-        r = \(ParamsNull x, b_req) ->
-            if x > 0 then b_req else 0
+        r = \ParamsNull x b_req ->
+            if x > 0 then b_req else 0,
 
-        iniParam :: ParamsNull
+        iniParam = ParamsNull
     }
 
 sigmoid :: Learner '[] Double Double
@@ -56,11 +56,8 @@ denseLayer w0 b0 = Learner
     }
   where ep = 0.01
 
-layer1 :: Learner
 layer1 = denseLayer 0.5 0.0
-
-layer2 :: Learner
 layer2 = denseLayer 0.3 0.0
 
-smallNet :: Learner '[Double, Double, Double Double] Double Double
+smallNet :: Learner '[Double, Double, Double, Double] Double Double
 smallNet = sigmoid . layer2 . relu . layer1

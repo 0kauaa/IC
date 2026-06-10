@@ -32,6 +32,7 @@ library:
     - Models.PolynomialRegressor
     - Models.StandardRegressor
     - Models.LogisticRegressor
+    - Models.Net
 
     # treinamento
     - Training.Training
@@ -87,9 +88,19 @@ executables:
     ghc-options:
     - -Wall
 
+
+  # rede neural
+  small-net:
+    main: Main.hs
+    source-dirs:
+      - app/small-net
+    dependencies:
+      - ic
+    ghc-options:
+    - -Wall
+
 # testes
 tests:
-
   test:
     main: Testes.hs
     source-dirs:
