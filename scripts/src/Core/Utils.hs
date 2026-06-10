@@ -1,4 +1,4 @@
-module Core.Utils where
+module Core.Utils (interpret, mean, stddev) where
 
 import Prelude hiding          ((.))
 import Core.Cat               ((.))
@@ -6,10 +6,6 @@ import Core.Params            (Params(..))
 import Core.Learner           (Learner(..))
 import Models.LinearRegressor (linearRegressor)
 import Models.StandardRegressor (standardlizer)
-
--- learner regressor normalizado = rl(p, z(x), z(y)), com z(x) = (x - mu) / sigma
-standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
-standardlizedRegressor mu sigma = linearRegressor . standardlizer mu sigma
 
 -- remove parâmetros aprendidos do espaço normalizado
 interpret :: Double -> Double -> Params '[Double, Double] -> Params '[Double, Double]

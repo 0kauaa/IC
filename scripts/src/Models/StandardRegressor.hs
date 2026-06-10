@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.StandardRegressor (standardlizer) where
+module Models.StandardRegressor (standardlizer, standardlizedRegressor) where
 
 import Prelude hiding         ((.))
 import Core.Cat               ((.))
@@ -10,7 +10,7 @@ import Core.Params            (Params(..))
 import Core.Learner
 import Models.LinearRegressor (linearRegressor)
 
--- padronização zscore
+-- normalização zscore
 standardlizer :: Double -> Double -> Learner '[] Double Double
 standardlizer mu sigma = Learner
     {
@@ -23,3 +23,5 @@ standardlizer mu sigma = Learner
         iniParam = ParamsNull
     }
 
+standardlizedRegressor :: Double -> Double -> Learner '[Double, Double] Double Double
+standardlizedRegressor mu sigma = linearRegressor . standardlizer mu sigma
