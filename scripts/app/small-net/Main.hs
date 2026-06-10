@@ -13,7 +13,7 @@ main = do
         mu    = mean   (map fst pairs)
         sigma = stddev (map fst pairs)
         
-        model = smallNet --mu sigma
+        model = smallNet mu sigma
         p0    = iniParam model
         ps    = train model p0 pairs 1000
 

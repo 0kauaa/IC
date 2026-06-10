@@ -14,12 +14,15 @@ import Models.LinearRegressor (linearRegressor)
 standardlizer :: Double -> Double -> Learner '[] Double Double
 standardlizer mu sigma = Learner
     {
-        -- padronização
-        i = \ParamsNull x   -> (x - mu) / sigma,
-        -- sem peso 
-        u = \ParamsNull _ _ -> ParamsNull,
-        -- gradiente da entrada 
-        r = \ParamsNull _ z -> z / sigma,    -- de/dx = z * 1/sigma = z/sigma
+        i = \ParamsNull x   -> 
+            (x - mu) / sigma,
+
+        u = \ParamsNull _ _ -> 
+            ParamsNull,
+
+        r = \ParamsNull _ z ->
+            z / sigma,
+
         iniParam = ParamsNull
     }
 
