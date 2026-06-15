@@ -15,7 +15,8 @@ Thumbs.db
 *.swp
 
 # my stuffs
-ideias/
+research/ideias/
+research/CONTEXT.md
 
 # python environments
 tools/python/.venv/

@@ -27,56 +27,98 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 
 ---
 
-## Estrutura do projeto
-
-```
-.
-├── app/                              ← módulos executáveis de cada modelo
-│   ├── linear-regressor/             ← regressão linear simples
-│   │   └── Main.hs
-│   ├── logistic-regressor/           ← regressão logística (sigmoid composto)
-│   │   └── Main.hs
-│   ├── polynomial-regressor/         ← regressão polinomial de grau 2
-│   │   └── Main.hs
-│   └── standard-regressor/           ← regressão linear com padronização z-score
-│       └── Main.hs
-│
-├── src/                              ← biblioteca principal
-│   ├── Core/
-│   │   ├── Cat.hs                    ← typeclass Cat (identidade e composição)
-│   │   ├── Learner.hs                ← morfismo Learner como instância de Cat
-│   │   └── Params.hs                 ← espaço de parâmetros
-│   │
-│   ├── Data/
-│   │   └── Synthetic/                ← dados sintéticos para treinamento e teste
-│   │       ├── Classified.hs         ← dados para classificação binária
-│   │       ├── Linear.hs             ← dados gerados sob estrutura linear com ruído
-│   │       └── Polynomial.hs         ← dados gerados sob estrutura polinomial com ruído
-│   │
-│   ├── Models/                       ← morfismos de aprendizado implementados
-│   │   ├── LinearRegressor.hs        ← learner da reta ŷ = wx + b
-│   │   ├── LogisticRegressor.hs      ← learner logístico (linear composto com sigmoid)
-│   │   ├── PolynomialRegressor.hs    ← learner polinomial (linear composto com ajuste quadrático)
-│   │   └── StandardRegressor.hs      ← learner com padronização z-score pré-composta
-│   │
-│   └── Training/
-│       └── Training.hs               ← loop de treinamento e utilitários de debug
-│
-├── test/                             ← verificação empírica das leis categoriais
-│   └── Testes.hs                     ← identidade à esquerda, direita e associatividade
-│
-├── estudo/                           ← experimentos e rascunhos (fora do build)
-├── package.yaml
-├── stack.yaml
-├── stack.yaml.lock
-└── README.md
-```
-
----
-
 ## **Modelos implementados**
 
-Até então, todos os modelos seguem o funtor $\mathcal{L}_{\varepsilon,e}$ com erro quadrático. O *backpropagation* emerge da composição em todos os casos, sem implementação explícita.
+## Estrutura do Projeto
+
+```text
+.
+├── codebase/                           # implementação principal da pesquisa
+│   │
+│   ├── app/                            # executáveis finais dos modelos
+│   │   ├── linear-regressor/
+│   │   │   └── Main.hs                 # executável do regressor linear
+│   │   ├── logistic-regressor/
+│   │   │   └── Main.hs                 # executável do regressor logístico
+│   │   ├── polynomial-regressor/
+│   │   │   └── Main.hs                 # executável do regressor polinomial
+│   │   ├── small-net/
+│   │   │   └── Main.hs                 # executável da rede neural mínima
+│   │   └── standard-regressor/
+│   │       └── Main.hs                 # executável do modelo base de regressão
+│   │
+│   ├── src/                            # biblioteca principal do projeto
+│   │   │
+│   │   ├── Core/                       # fundamentos teóricos da categoria Learn
+│   │   │   ├── Cat.hs                  # definição da classe categórica
+│   │   │   ├── Learner.hs              # morfismos Learn e composição
+│   │   │   ├── Params.hs               # espaço de parâmetros heterogêneo
+│   │   │   └── Utils.hs                # utilidades compartilhadas
+│   │   │
+│   │   ├── Data/                       # geração e manipulação de dados
+│   │   │   └── Synthetic/
+│   │   │       ├── Classified.hs       # datasets sintéticos para classificação
+│   │   │       ├── Linear.hs           # geração de dados lineares
+│   │   │       └── Polynomial.hs       # geração de dados polinomiais
+│   │   │
+│   │   ├── Models/                     # implementação dos modelos de aprendizado
+│   │   │   ├── LinearRegressor.hs      # regressão linear
+│   │   │   ├── LogisticRegressor.hs    # regressão logística
+│   │   │   ├── Net.hs                  # rede neural genérica
+│   │   │   ├── PolynomialRegressor.hs  # regressão polinomial
+│   │   │   └── StandardRegressor.hs    # modelo de referência/base
+│   │   │
+│   │   └── Training/
+│   │       └── Training.hs             # algoritmos de treinamento e atualização
+│   │
+│   ├── test/
+│   │   └── Testes.hs                   # verificação das leis categoriais
+│   │
+│   ├── ic.cabal                        # configuração Cabal
+│   ├── package.yaml                    # configuração Hpack
+│   ├── stack.yaml                      # configuração Stack
+│   └── stack.yaml.lock                 # lockfile do Stack
+│
+├── data/                               # datasets utilizados pelos modelos
+│   └── iris.csv                        # dataset Iris para experimentos
+│
+├── research/                           # material científico da pesquisa
+│   ├── CONTEXT.md                      # contexto atual do desenvolvimento da pesquisa
+│   │
+│   ├── docs/                           # documentação formal
+│   │   ├── papers/                     # artigos produzidos durante a pesquisa
+│   │   ├── presentation/               # apresentações feitas durante a pesquisa
+│   │   ├── propose/                    # formularios e proposta da pesquisa
+│   │   └── reports/                    # relatórios parciais e finais
+│   │
+│   ├── experiments/                    # experimentos de estudo
+│   ├── ideias/                         # anotações rápidas e hipóteses
+│   └── refs/                           # bibliografia da pesquisa
+│
+├── tools/                              # ferramentas auxiliares externas
+│   └── python/
+│       ├── import_iris.py              # importação do iris para csv local
+│       └── requirements.txt            # dependências python
+│
+└── README.md                           # este arquivo
+```
+
+### Organização
+
+| Diretório    | Responsabilidade                                             |
+| ------------- | ------------------------------------------------------------ |
+| `codebase/` | Implementação principal da pesquisa                        |
+| `research/` | Produção científica, documentação e experimentos        |
+| `data/`     | Datasets utilizados pelos modelos                            |
+| `tools/`    | Ferramentas auxiliares externas à implementação principal |
+
+### Convenções
+
+- Todo código que faz parte da implementação oficial residem em `codebase/`.
+- Scripts exploratórios residem em `research/experiments/`.
+- Dados utilizados pelos modelos residem em `data/`.
+- Ferramentas auxiliares (Python) residem em `tools/`.
+- Referências bibliográficas residem em `research/refs/`.
 
 ### Regressão linear simples
 
@@ -112,7 +154,7 @@ Um *learner* que computa $x \mapsto x^2$ sem parâmetros é composto ao regresso
 ```bash
 # clonar o repositório
 git clone https://github.com/0kauaa/IC
-cd IC/scripts
+cd IC/codebase
 
 # compilar
 stack build
