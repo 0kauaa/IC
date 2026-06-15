@@ -16,3 +16,6 @@ Thumbs.db
 
 # my stuffs
 ideias/
+
+# python environments
+tools/python/.venv/
