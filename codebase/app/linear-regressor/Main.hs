@@ -4,7 +4,7 @@ import Core.Params()
 import Core.Learner           (Learner(..))
 import Models.LinearRegressor (linearRegressor)
 import Training.Training      (step, train, debug)
-import Data.Synthetic.Linear  (data_2_1)
+import Dataset.Synthetic.Linear  (data_2_1)
 
 main :: IO ()
 main = do

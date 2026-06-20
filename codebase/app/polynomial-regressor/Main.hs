@@ -5,7 +5,7 @@ import Core.Learner               (Learner(..))
 import Core.Utils                 (mean, stddev, interpret)
 import Models.PolynomialRegressor (polynomialRegressor)
 import Training.Training          (step, train, debug)
-import Data.Synthetic.Polynomial  (data_03_3neg)
+import Dataset.Synthetic.Polynomial  (data_03_3neg)
 
 main :: IO ()
 main = do

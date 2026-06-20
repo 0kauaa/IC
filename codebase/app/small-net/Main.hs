@@ -5,7 +5,7 @@ import Core.Learner              (Learner(..))
 import Core.Utils                (mean, stddev)
 import Models.Net                (smallNet)
 import Training.Training         (train)
-import Data.Synthetic.Classified (data_0_1)
+import Dataset.Synthetic.Classified (data_0_1)
 
 main :: IO ()
 main = do
@@ -17,4 +17,5 @@ main = do
         p0    = iniParam model
         ps    = train model p0 pairs 1000
 
+    putStrLn $ "coeficientes de classificação: " ++ show ps
     putStrLn $ "predicao para a entrada 1.2 (1): " ++ show (i model ps 1.2)

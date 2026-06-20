@@ -38,9 +38,9 @@ library:
     - Training.Training
 
     # dados
-    - Data.Synthetic.Linear
-    - Data.Synthetic.Polynomial
-    - Data.Synthetic.Classified
+    - Dataset.Synthetic.Linear
+    - Dataset.Synthetic.Polynomial
+    - Dataset.Synthetic.Classified
 
   ghc-options:
     - -Wall

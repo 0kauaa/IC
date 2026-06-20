@@ -1,4 +1,4 @@
-module Data.Synthetic.Classified where
+module Dataset.Synthetic.Classified where
 
 data_0_1 :: [(Double, Double)]
 data_0_1 =

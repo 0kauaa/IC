@@ -5,7 +5,7 @@ import Core.Learner              (Learner(..))
 import Core.Utils                (mean, stddev)
 import Models.LogisticRegressor  (logisticRegressor)
 import Training.Training         (train)
-import Data.Synthetic.Classified (data_0_1)
+import Dataset.Synthetic.Classified (data_0_1)
 
 main :: IO ()
 main = do
