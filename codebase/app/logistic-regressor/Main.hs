@@ -2,7 +2,7 @@ module Main where
 
 import Core.Params()
 import Core.Learner              (Learner(..))
-import Core.Utils                (mean, stddev)
+import Core.Utils                (mean, stddev, interpret)
 import Models.LogisticRegressor  (logisticRegressor)
 import Training.Training         (train)
 import Dataset.Synthetic.Classified (data_0_1)
@@ -17,4 +17,5 @@ main = do
         p0    = iniParam model
         ps    = train model p0 pairs 1000
 
-    putStrLn $ "predicao para a entrada 1.2 (1): " ++ show (i model ps 1.2)
+    putStrLn $ "coeficientes de classificação: " ++ show (interpret mu sigma ps)
+    putStrLn $ "predicao para a entrada 1.2 (1): " ++ show (i model ps 0.1)

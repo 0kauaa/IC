@@ -1,5 +1,3 @@
-{-# LANGUAGE DataKinds     #-}
-{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE PolyKinds     #-}
 
 module Core.Cat (Cat(..)) where

@@ -1,15 +1,37 @@
 module Main where
 
-import Core.Params()
+-- essenciais
+import Prelude hiding             (id, (.))
+import Core.Cat                   (Cat(..))
 import Core.Learner               (Learner(..))
+import Core.Params                (Params(..))
+
+-- learners
+import Sandbox.Layers             (denseLayer)
+import Sandbox.Activations        (relu)
+import Sandbox.Outputs            (bceOutput)
+import Sandbox.Preprocessing      (zScore)
+
+-- treinamento e teste
 import Core.Utils                 (mean, stddev)
-import Models.Net                 (smallNet)
 import Training.Training          (train)
 import Training.Accuracy          (accuracy)
+
+-- dados
 import Dataset.Empirical.IrisPCA2 (IrisPCA2(..), fromIris)
-import qualified Data.ByteString.Lazy as BL
-import qualified Data.Vector as V 
 import Data.Csv                   (decodeByName)
+import qualified Data.ByteString.Lazy as BL
+import qualified Data.Vector as V
+
+-- modelo
+layer1 ::Learner '[Double, Double] Double Double
+layer1 = denseLayer 0.3 0.0
+
+layer2 ::Learner '[Double, Double] Double Double
+layer2 = denseLayer 0.5 0.0
+
+classifier :: Double -> Double -> Learner '[Double, Double, Double, Double] Double Double
+classifier mu sigma = bceOutput . layer2 . relu . layer1 . zScore mu sigma
 
 main :: IO ()
 main = do
@@ -28,7 +50,7 @@ main = do
         testPairs  = map fromIris testData
         mu         = mean   (map fst trainPairs)
         sigma      = stddev (map fst trainPairs)
-        model      = smallNet mu sigma
+        model      = classifier mu sigma
         p0         = iniParam model
         ps         = train model p0 trainPairs 100
 

@@ -1,5 +1,3 @@
-{-# LANGUAGE DataKinds    #-}
-{-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Models.StandardRegressor (standardlizer, standardlizedRegressor) where

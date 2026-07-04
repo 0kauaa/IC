@@ -1,16 +1,12 @@
-{-# LANGUAGE DataKinds            #-}
 {-# LANGUAGE KindSignatures       #-}
-{-# LANGUAGE TypeOperators        #-}
-{-# LANGUAGE GADTs                #-}
 
-module Core.Learner (Learner(..)) where
+module Core.Learner (Learner(..), (//)) where
 
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)
 import Core.Cat       (Cat(..))
-import Core.Params    (Params(..), projectFirst, projectRest, unify)
+import Core.Params    (Params(..), projectFirst, projectRest, unify, type (++))
 
--- morfismo parametrizado: Learner ps a b
 data Learner (ps :: [Type]) a b = Learner
     {
         i        :: Params ps -> a -> b,               -- implement
@@ -18,10 +14,35 @@ data Learner (ps :: [Type]) a b = Learner
         r        :: Params ps -> a -> b -> a,          -- request
         iniParam :: Params ps                          -- parâmetro inicial
     }
+    
+infixr 3 //
+
+(//) :: Learner ps a b -> Learner qs c d -> Learner (ps ++ qs) (a, c) (b, d)
+(//) (Learner i' u' r' params') (Learner i'' u'' r'' params'') = Learner
+    {
+        i = \params (a, c) ->
+            let p = projectFirst params' params'' params
+                q = projectRest  params' params'' params
+            in (i' p a, i'' q c),
+
+        u = \params (a, c) (b, d) ->
+            let p  = projectFirst params' params'' params
+                q  = projectRest  params' params'' params
+                p' = u' p a b
+                q' = u'' q c d
+            in unify p' q',
+
+        r = \params (a, c) (b, d) ->
+            let p     = projectFirst params' params'' params
+                q     = projectRest  params' params'' params
+                a_req = r' p a b
+                c_req = r'' q c d
+            in (a_req, c_req),
+
+        iniParam = unify params' params''
+    }
 
 instance Cat Learner where
-
-    -- identidade: parâmetro vazio, funções identidade
     id = Learner
         {
             i        = \ParamsNull a   -> a,
@@ -30,9 +51,6 @@ instance Cat Learner where
             iniParam = ParamsNull
         }
 
-    --  g :: Learner qs b c
-    --  f :: Learner ps a b
-    -- gf :: Learner (ps ++ qs) a c
     (.) (Learner i'' u'' r'' params'') (Learner i' u' r' params') = Learner
         {
             -- implement: aplica f, depois g

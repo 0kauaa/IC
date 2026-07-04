@@ -5,23 +5,29 @@ license:      MIT
 author:       "Kauã Santana"
 maintainer:   "kauassilva0023@gmail.com"
 
-# dependências globais
+# configurações compartilhadas globalmente
+default-extensions:
+  - DataKinds
+  - TypeOperators
+  - GADTs
+
+ghc-options:
+  - -Wall
+
+# dependências compartilhadas globalmente
 dependencies:
   - base >= 4.17 && < 5
+  - cassava
+  - bytestring
+  - vector
 
-# arquivos libs
+# biblioteca
 library:
   source-dirs: src
 
-  # extensões comuns
-  default-extensions:
-   - DataKinds
-   - TypeOperators
-   - GADTs
-
   # api global
   exposed-modules:
-    # core
+    # core estrutural
     - Core.Cat
     - Core.Learner
     - Core.Params
@@ -36,37 +42,38 @@ library:
 
     # treinamento
     - Training.Training
+    - Training.Accuracy
 
     # dados
     - Dataset.Synthetic.Linear
     - Dataset.Synthetic.Polynomial
     - Dataset.Synthetic.Classified
+    - Dataset.Empirical.IrisPCA2
 
-  ghc-options:
-    - -Wall
+    # sandbox
+    - Sandbox.Activations
+    - Sandbox.Layers
+    - Sandbox.Outputs
+    - Sandbox.Preprocessing
 
 # arquivos executaveis
 executables:
 
-# regressor linear
+  # regressor linear
   linear-regressor:
     main: Main.hs
     source-dirs:
       - app/linear-regressor
     dependencies:
       - ic
-    ghc-options:
-      - -Wall
 
-# regressor padronizado
+  # regressor padronizado
   standard-regressor:
     main: Main.hs
     source-dirs:
       - app/standard-regressor
     dependencies:
       - ic
-    ghc-options:
-      - -Wall
 
   # regressor polinomial
   polynomial-regressor:
@@ -75,8 +82,6 @@ executables:
       - app/polynomial-regressor
     dependencies:
       - ic
-    ghc-options:
-      - -Wall
 
   # regressor logistico
   logistic-regressor:
@@ -85,9 +90,6 @@ executables:
       - app/logistic-regressor
     dependencies:
       - ic
-    ghc-options:
-    - -Wall
-
 
   # rede neural
   small-net:
@@ -96,8 +98,22 @@ executables:
       - app/small-net
     dependencies:
       - ic
-    ghc-options:
-    - -Wall
+
+  # dataset iris 
+  iris-pca2:
+    main: Main.hs
+    source-dirs:
+      - app/iris-pca2
+    dependencies:
+      - ic
+  
+  # playground do sandbox
+  playground:
+    main: Main.hs
+    source-dirs:
+      - app/playground
+    dependencies:
+      - ic
 
 # testes
 tests:
@@ -107,5 +123,3 @@ tests:
       - test
     dependencies:
       - ic
-    ghc-options:
-      - -Wall

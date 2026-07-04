@@ -1,10 +1,7 @@
 {-# LANGUAGE AllowAmbiguousTypes  #-}
-{-# LANGUAGE DataKinds            #-}
 {-# LANGUAGE DerivingStrategies   #-}
 {-# LANGUAGE KindSignatures       #-}
 {-# LANGUAGE TypeFamilies         #-}
-{-# LANGUAGE TypeOperators        #-}
-{-# LANGUAGE GADTs                #-}
 {-# LANGUAGE StandaloneDeriving   #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE FlexibleContexts     #-}
@@ -27,7 +24,6 @@ type family (xs :: [Type]) ++ (ys :: [Type]) :: [Type] where
     '[]       ++ ys  = ys
     (x ': xs) ++ ys  = x ': (xs ++ ys)
 
-
 -- espaço de parâmetros: elemento neutro e concatenação (monóide livre)
 data Params (ps :: [Type]) where
     ParamsNull :: Params '[]
@@ -35,7 +31,6 @@ data Params (ps :: [Type]) where
 
 -- precedência de (:::), mesma de (:)
 infixr 5 :::
-
 
 -- instância Show
 class ShowParams ps where
@@ -49,7 +44,6 @@ instance (Show p, ShowParams ps) => ShowParams (p ': ps) where
 
 instance ShowParams ps => Show (Params ps) where
     show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
-
 
 -- projeção dos parâmetros do learner interno (retorna ps, ignora qs)
 projectFirst ::  Params ps -> Params qs -> Params (ps ++ qs) -> Params ps

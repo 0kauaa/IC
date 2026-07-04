@@ -2,5 +2,6 @@
 from pandas import DataFrame
 from seaborn import load_dataset
 
-iris = DataFrame(load_dataset("iris"))
-iris.to_csv("../../data/iris.csv", index=False)
+iris  = DataFrame(load_dataset("iris"))
+iris2 = iris.query("species != 'virginica'")
+iris2.to_csv("../../data/iris/raw/iris2.csv", index=False)

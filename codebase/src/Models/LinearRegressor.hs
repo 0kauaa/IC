@@ -1,5 +1,3 @@
-{-# LANGUAGE DataKinds    #-}
-{-# LANGUAGE GADTs        #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Models.LinearRegressor(linearRegressor) where
