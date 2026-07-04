@@ -28,16 +28,13 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 ---
 
 ## **Modelos implementados**
-
-## Estrutura do Projeto
-
 ```text
 .
 ├── codebase/                           # implementação principal da pesquisa
 │   │
 │   ├── app/                            # executáveis finais dos modelos
-│   │   ├── iris-pca2/                  # exibição do iris
-│   │   │   └── Main.hs  
+│   │   ├── iris-pca2/
+│   │   │   └── Main.hs
 │   │   ├── linear-regressor/
 │   │   │   └── Main.hs                 # executável do regressor linear
 │   │   ├── logistic-regressor/
@@ -57,13 +54,13 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 │   │   │   ├── Params.hs               # espaço de parâmetros heterogêneo
 │   │   │   └── Utils.hs                # utilidades compartilhadas
 │   │   │
-│   │   ├── Data/                       # geração e manipulação de dados
-│   │   │   └── Synthetic/
+│   │   ├── Dataset/                    # geração e manipulação de dados
+│   │   │   ├── Synthetic/
 │   │   │   │   ├── Classified.hs       # datasets sintéticos para classificação
 │   │   │   │   ├── Linear.hs           # geração de dados lineares
 │   │   │   │   └── Polynomial.hs       # geração de dados polinomiais
 │   │   │   └── Empirical/              # datasets não sintéticos
-│   │	│       └── IrisPCA2.hs         # dataloader do iris com duas variáveis (pc1 e specie)
+│   │   │       └── IrisPCA2.hs         # dataloader do iris com duas variáveis (pc1 e specie)
 │   │   │
 │   │   ├── Models/                     # implementação dos modelos de aprendizado
 │   │   │   ├── LinearRegressor.hs      # regressão linear
@@ -76,11 +73,11 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 │   │   │   ├── Layers.hs               # camadas densas (sem função de perda)
 │   │   │   ├── Activations.hs          # relu, sigmoid interno, tanh
 │   │   │   ├── Losses.hs               # morfismos de saída com perda embutida
-│   │   │   └── Normalizers.hs          # z-score, min-max
+│   │   │   └── Preprocessing.hs        # normalizadores e utilitários
 │   │   │
 │   │   └── Training/
 │   │       ├── Training.hs             # algoritmos de treinamento e atualização
-│   │       └── Accuracy.hs             # acurácia para os testes dos modelos 
+│   │       └── Accuracy.hs             # acurácia para os testes dos modelos
 │   │
 │   ├── test/
 │   │   └── Testes.hs                   # verificação das leis categoriais
@@ -92,21 +89,19 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 │
 ├── data/                               # datasets utilizados pelos modelos
 │   └── iris/
-│	├── raw/
+│       ├── raw/
 │       │   ├── iris2_test.csv
 │       │   └── iris2_train.csv
-│	└── prep/
-│	    └──iris2.csv
+│       └── prep/
+│           └── iris2.csv
 │
 ├── research/                           # material científico da pesquisa
 │   ├── CONTEXT.md                      # contexto atual do desenvolvimento da pesquisa (este arquivo)
-│   │
 │   ├── docs/                           # documentação formal
 │   │   ├── papers/                     # artigos produzidos durante a pesquisa
 │   │   ├── presentation/               # apresentações feitas durante a pesquisa
 │   │   ├── propose/                    # formularios e proposta da pesquisa
 │   │   └── reports/                    # relatórios parciais e finais
-│   │
 │   ├── experiments/                    # experimentos de estudo
 │   ├── ideias/                         # anotações rápidas e hipóteses
 │   └── refs/                           # bibliografia da pesquisa
@@ -116,9 +111,12 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 │       ├── import_iris.py              # importação do iris para csv local
 │       ├── prep_iris.py                # pre-processamento e aplicação do pca ao iris
 │       ├── requirements.txt            # dependências python
-│       └── plots/                      # visualização em gráfico dos dados
-|           └── iris_pca2.png           # iris com duas variáveis (pc1 e specie)
+│       └── plots/
+│           └── iris_pca2.png           # iris com duas variáveis (pc1 e specie)
 │
+└── README.md                           # documentação do projeto
+
+```
 └── README.md                           # documentação do projeto
 
 ```
