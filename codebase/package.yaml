@@ -55,6 +55,7 @@ library:
     - Sandbox.Layers
     - Sandbox.Outputs
     - Sandbox.Preprocessing
+    - Sandbox.Routing
 
 # arquivos executaveis
 executables:
@@ -114,6 +115,15 @@ executables:
       - app/playground
     dependencies:
       - ic
+  
+  # rede residual
+  residual-net:
+    main: Main.hs
+    source-dirs:
+      - app/residual-net
+    dependencies:
+      - ic
+    ghc-options: -Wall
 
 # testes
 tests:

@@ -1,7 +1,15 @@
-module Sandbox.Outputs (bceOutput) where
+module Sandbox.Outputs (mseOutput, bceOutput) where
 
 import Core.Params
 import Core.Learner
+
+mseOutput :: Learner '[] Double Double
+mseOutput = Learner
+    { i        = \ParamsNull x      -> x
+    , u        = \ParamsNull _ _    -> ParamsNull
+    , r        = \ParamsNull yhat y -> yhat - y
+    , iniParam = ParamsNull
+    }
 
 bceOutput :: Learner '[] Double Double
 bceOutput = Learner
