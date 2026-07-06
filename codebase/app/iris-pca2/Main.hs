@@ -9,7 +9,7 @@ import Dataset.Empirical.IrisPCA2 (IrisPCA2(..), fromIris)
 
 main :: IO ()
 main = do
-    iris <- BL.readFile "../data/iris_pca.csv"
+    iris <- BL.readFile "../data/iris/prep/iris2_test.csv"
 
     case decodeByName iris of
         Left  e      -> putStrLn e
