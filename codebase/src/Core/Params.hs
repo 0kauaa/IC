@@ -10,7 +10,13 @@
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TypeApplications     #-}
 
-module Core.Params (Params(..), ShowParams(..), type (++), projectFirst, projectRest, unify) where
+module Core.Params
+    (Params(..)
+    , ShowParams(..)
+    , type (++)
+    , projectFirst
+    , projectRest
+    , unify) where
 
 import Prelude           hiding ((++))
 import qualified Prelude as P
@@ -19,18 +25,16 @@ import Data.List          (intercalate)
 import Unsafe.Coerce      (unsafeCoerce)
 import GHC.Exts           (Any)
 
--- concatenação de listas no nível de tipos
-type family (xs :: [Type]) ++ (ys :: [Type]) :: [Type] where
-    '[]       ++ ys  = ys
-    (x ': xs) ++ ys  = x ': (xs ++ ys)
-
--- espaço de parâmetros: elemento neutro e concatenação (monóide livre)
+-- GADT do espaço de parâmtros
+infixr 5 :::
 data Params (ps :: [Type]) where
     ParamsNull :: Params '[]
     (:::)      :: p -> Params ps -> Params (p ': ps)
 
--- precedência de (:::), mesma de (:)
-infixr 5 :::
+-- type family de concatenação entre espaço de parâmetros
+type family (xs :: [Type]) ++ (ys :: [Type]) :: [Type] where
+    '[]       ++ ys  = ys
+    (x ': xs) ++ ys  = x ': (xs ++ ys)
 
 -- instância Show
 class ShowParams ps where
@@ -45,7 +49,7 @@ instance (Show p, ShowParams ps) => ShowParams (p ': ps) where
 instance ShowParams ps => Show (Params ps) where
     show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
 
--- projeção dos parâmetros do learner interno (retorna ps, ignora qs)
+-- funções auxiliares para manipulação do espaço de parâmetros
 projectFirst ::  Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
 projectFirst ParamsNull    _  _    = ParamsNull
 projectFirst (_ ::: rest) qs pqs  =
@@ -53,7 +57,6 @@ projectFirst (_ ::: rest) qs pqs  =
         ParamsNull -> unsafeCoerce ParamsNull
         (x ::: xs) -> unsafeCoerce x ::: projectFirst rest qs (unsafeCoerce xs)
 
--- projeção dos parâmetros do learner externo (descarta ps, retorna qs)
 projectRest :: Params ps -> Params qs -> Params (ps ++ qs) -> Params qs
 projectRest ParamsNull    _  qs   = qs
 projectRest (_ ::: rest) qs pqs  =
@@ -61,7 +64,6 @@ projectRest (_ ::: rest) qs pqs  =
         ParamsNull -> unsafeCoerce ParamsNull
         (_ ::: xs) -> projectRest rest qs (unsafeCoerce xs)
 
--- concatenação de dois espaços de parâmetros
 unify :: Params ps -> Params qs -> Params (ps ++ qs)
 unify ParamsNull  ys = ys
 unify (x ::: xs) ys = x ::: unify xs ys
