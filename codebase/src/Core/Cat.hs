@@ -1,6 +1,8 @@
 {-# LANGUAGE PolyKinds     #-}
 
-module Core.Cat (Cat(..)) where
+module Core.Cat 
+    ( Cat(..)
+    ) where
 
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)

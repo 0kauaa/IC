@@ -1,4 +1,6 @@
-module Models.Net (smallNet) where
+module Models.Net 
+    ( smallNet 
+    ) where
 
 import Prelude hiding (id, (.))
 import Core.Cat       (Cat(..))

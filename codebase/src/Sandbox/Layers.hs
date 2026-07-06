@@ -1,4 +1,6 @@
-module Sandbox.Layers (denseLayer) where
+module Sandbox.Layers
+    ( denseLayer
+    ) where
 
 import Core.Params
 import Core.Learner

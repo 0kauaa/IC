@@ -1,4 +1,6 @@
-module Sandbox.Activations (relu) where
+module Sandbox.Activations
+    ( relu
+    ) where
 
 import Core.Params
 import Core.Learner

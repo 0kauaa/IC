@@ -1,4 +1,6 @@
-module Dataset.Synthetic.Linear where
+module Dataset.Synthetic.Linear 
+    ( data_2_1
+    ) where
 
 -- distruibuição linear, com ruido e: f(x) = 2x + 1 + e
 data_2_1 :: [(Double, Double)]

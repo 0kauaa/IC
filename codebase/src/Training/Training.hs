@@ -1,4 +1,7 @@
-module Training.Training (step, train, debug) where
+module Training.Training
+    ( step
+    , train
+    , debug) where
 
 import Core.Learner
 import Core.Params

@@ -1,4 +1,8 @@
-module Core.Utils (interpret, mean, stddev) where
+module Core.Utils 
+    ( interpret
+    , mean
+    , stddev
+    ) where
 
 import Prelude hiding          ((.))
 import Core.Cat               ((.))

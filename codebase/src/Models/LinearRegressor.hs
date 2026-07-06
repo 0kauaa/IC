@@ -1,6 +1,8 @@
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.LinearRegressor(linearRegressor) where
+module Models.LinearRegressor 
+    ( linearRegressor
+    ) where
 
 import Core.Learner
 import Core.Params  (Params(..))

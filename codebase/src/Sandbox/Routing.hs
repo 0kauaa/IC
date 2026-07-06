@@ -1,5 +1,10 @@
-
-module Sandbox.Routing (monoid, comonoid, delete, leftUnit, rightUnit, assoc) where
+module Sandbox.Routing
+    ( monoid
+    , comonoid
+    , delete
+    , leftUnit
+    , rightUnit
+    , assoc) where
 
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)

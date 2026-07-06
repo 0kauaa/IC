@@ -1,4 +1,6 @@
-module Sandbox.Outputs (mseOutput, bceOutput) where
+module Sandbox.Outputs
+    ( mseOutput
+    , bceOutput) where
 
 import Core.Params
 import Core.Learner

@@ -1,6 +1,9 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Dataset.Empirical.IrisPCA2 (IrisPCA2(..), fromIris) where
+module Dataset.Empirical.IrisPCA2 
+    ( IrisPCA2(..)
+    , fromIris
+    ) where
 
 import Data.Csv     (FromNamedRecord)
 import GHC.Generics (Generic)

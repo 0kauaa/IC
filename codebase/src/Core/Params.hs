@@ -2,21 +2,20 @@
 {-# LANGUAGE DerivingStrategies   #-}
 {-# LANGUAGE KindSignatures       #-}
 {-# LANGUAGE TypeFamilies         #-}
-{-# LANGUAGE StandaloneDeriving   #-}
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE RankNTypes           #-}
 {-# LANGUAGE ScopedTypeVariables  #-}
-{-# LANGUAGE TypeApplications     #-}
 
 module Core.Params
-    (Params(..)
+    ( Params(..)
     , ShowParams(..)
     , type (++)
     , projectFirst
     , projectRest
-    , unify) where
+    , unify 
+    ) where
 
 import Prelude           hiding ((++))
 import qualified Prelude as P

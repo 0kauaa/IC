@@ -1,4 +1,6 @@
-module Training.Accuracy (accuracy) where
+module Training.Accuracy
+    ( accuracy
+    ) where
 
 import Core.Learner
 import Core.Params

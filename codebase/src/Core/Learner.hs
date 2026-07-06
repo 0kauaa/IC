@@ -1,8 +1,9 @@
 {-# LANGUAGE KindSignatures       #-}
 
 module Core.Learner
-    (Learner(..)
-    , (//)) where
+    ( Learner(..)
+    , (//)
+    ) where
 
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)

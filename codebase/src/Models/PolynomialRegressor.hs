@@ -1,4 +1,6 @@
-module Models.PolynomialRegressor (polynomialAdjuster, polynomialRegressor) where
+module Models.PolynomialRegressor
+    ( polynomialAdjuster
+    , polynomialRegressor) where
 
 import Prelude hiding           ((.))
 import Core.Cat                 ((.))

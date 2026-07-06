@@ -1,4 +1,6 @@
-module Models.LogisticRegressor (sigmoid, logisticRegressor) where
+module Models.LogisticRegressor 
+    ( sigmoid
+    , logisticRegressor) where
 
 import Prelude hiding           ((.))
 import Core.Cat                 ((.))

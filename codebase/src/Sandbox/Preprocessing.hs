@@ -1,4 +1,6 @@
-module Sandbox.Preprocessing (zScore, minMax) where
+module Sandbox.Preprocessing
+    ( zScore
+    , minMax) where
 
 import Core.Params
 import Core.Learner

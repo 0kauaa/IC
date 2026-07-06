@@ -1,4 +1,6 @@
-module Dataset.Synthetic.Polynomial where
+module Dataset.Synthetic.Polynomial
+    ( data_03_3neg
+    ) where
 
 -- distribuição polinomial, com erro e: f(x) = 0.3x² - 3 + e
 data_03_3neg :: [(Double, Double)]

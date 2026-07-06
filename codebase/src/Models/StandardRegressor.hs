@@ -1,6 +1,8 @@
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.StandardRegressor (standardlizer, standardlizedRegressor) where
+module Models.StandardRegressor
+    ( standardlizer
+    , standardlizedRegressor) where
 
 import Prelude hiding         ((.))
 import Core.Cat               ((.))
