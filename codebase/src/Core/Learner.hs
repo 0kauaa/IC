@@ -1,4 +1,4 @@
-{-# LANGUAGE KindSignatures       #-}
+{-# LANGUAGE KindSignatures #-}
 
 module Core.Learner
     ( Learner(..)

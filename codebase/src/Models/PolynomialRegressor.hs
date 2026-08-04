@@ -12,14 +12,10 @@ import Models.LinearRegressor   (linearRegressor)
 -- ajuste polinomial
 polynomialAdjuster :: Learner '[] Double Double
 polynomialAdjuster = Learner
-    {
-        -- ajuste quadratico
-        i = \ParamsNull x   -> x * x,
-        -- não parametrizado
-        u = \ParamsNull _ _ -> ParamsNull,
-        -- gradiente da entrada (regra da cadeia)
-        r = \ParamsNull x y -> y * 2 * x,
-        iniParam = ParamsNull
+    { i = \ParamsNull x   -> x * x
+    , u = \ParamsNull _ _ -> ParamsNull
+    , r = \ParamsNull x y -> y * 2 * x
+    , iniParam = ParamsNull
     }
 
 polynomialRegressor :: Double -> Double -> Learner '[Double, Double] Double Double

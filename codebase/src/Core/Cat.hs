@@ -1,4 +1,4 @@
-{-# LANGUAGE PolyKinds     #-}
+{-# LANGUAGE PolyKinds #-}
 
 module Core.Cat 
     ( Cat(..)

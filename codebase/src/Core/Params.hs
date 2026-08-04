@@ -1,12 +1,4 @@
-{-# LANGUAGE AllowAmbiguousTypes  #-}
-{-# LANGUAGE DerivingStrategies   #-}
-{-# LANGUAGE KindSignatures       #-}
-{-# LANGUAGE TypeFamilies         #-}
-{-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE FlexibleContexts     #-}
-{-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE RankNTypes           #-}
-{-# LANGUAGE ScopedTypeVariables  #-}
+{-# LANGUAGE AllowAmbiguousTypes, DerivingStrategies, FlexibleInstances, FlexibleContexts, UndecidableInstances, RankNTypes, ScopedTypeVariables #-}
 
 module Core.Params
     ( Params(..)

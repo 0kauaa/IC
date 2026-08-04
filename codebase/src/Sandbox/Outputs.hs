@@ -17,6 +17,6 @@ bceOutput :: Learner '[] Double Double
 bceOutput = Learner
     { i = \ParamsNull z   -> 1.0 / (1.0 + exp (-z))
     , u = \ParamsNull _ _ -> ParamsNull
-    , r = \ParamsNull z y -> let s = 1.0 / (1.0 + exp (-z)) in  s - y
+    , r = \ParamsNull z y -> 1.0 / (1.0 + exp (-z)) - y
     , iniParam = ParamsNull
     }

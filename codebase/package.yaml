@@ -8,6 +8,7 @@ maintainer:   "kauassilva0023@gmail.com"
 # configurações compartilhadas globalmente
 default-extensions:
   - DataKinds
+  - TypeFamilies
   - TypeOperators
   - GADTs
 
