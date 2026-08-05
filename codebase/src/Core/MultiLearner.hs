@@ -10,7 +10,7 @@ import Core.Multi    (Multi(..))
 import Core.Params   (Params(..), type (++), projectFirst, projectRest, unify)
 import Core.MultiCat (MultiCat(..))
 import Unsafe.Coerce (unsafeCoerce)
-import GHC.Exts     (Any)
+import GHC.Exts      (Any)
 
 data MultiLearner (ps :: [Type]) (as :: [Type]) b = MultiLearner
     { i :: Params ps -> Multi as -> b
