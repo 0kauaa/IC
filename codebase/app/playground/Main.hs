@@ -14,11 +14,10 @@ import Sandbox.Preprocessing      (zScore)
 
 -- treinamento e teste
 import Core.Utils                 (mean, stddev)
-import Training.Training          (train)
-import Training.Accuracy          (accuracy)
+import Training.Training          (train, accuracy)
 
 -- dados
-import Dataset.Empirical.IrisPCA2 (IrisPCA2(..), fromIris)
+import Dataset.Empirical.IrisPCA2 (IrisPCA2(..), fromIrisPCA2)
 import Data.Csv                   (decodeByName)
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Vector as V
@@ -46,8 +45,8 @@ main = do
         Left  e      -> error e
         Right (_, v) -> return $ V.toList v
     
-    let trainPairs = map fromIris trainData
-        testPairs  = map fromIris testData
+    let trainPairs = map fromIrisPCA2 trainData
+        testPairs  = map fromIrisPCA2 testData
         mu         = mean   (map fst trainPairs)
         sigma      = stddev (map fst trainPairs)
         model      = classifier mu sigma

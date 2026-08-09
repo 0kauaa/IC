@@ -33,7 +33,10 @@ library:
     - Core.Learner
     - Core.Params
     - Core.Utils
-    
+    - Core.Multi
+    - Core.MultiCat
+    - Core.MultiLearner
+
     # modelos
     - Models.LinearRegressor
     - Models.PolynomialRegressor
@@ -43,20 +46,25 @@ library:
 
     # treinamento
     - Training.Training
-    - Training.Accuracy
 
     # dados
     - Dataset.Synthetic.Linear
     - Dataset.Synthetic.Polynomial
     - Dataset.Synthetic.Classified
     - Dataset.Empirical.IrisPCA2
+    - Dataset.Empirical.Iris2
 
-    # sandbox
+    # sandbox Learner
     - Sandbox.Activations
     - Sandbox.Layers
     - Sandbox.Outputs
     - Sandbox.Preprocessing
     - Sandbox.Routing
+
+    # sandbox MultiLearner
+    - Sandbox.Multi.Embed
+    - Sandbox.Multi.Layers
+    - Sandbox.Multi.Outputs
 
 # arquivos executaveis
 executables:
@@ -122,6 +130,15 @@ executables:
     main: Main.hs
     source-dirs:
       - app/residual-net
+    dependencies:
+      - ic
+    ghc-options: -Wall
+  
+  # iris-multi
+  iris-multi:
+    main: Main.hs
+    source-dirs:
+      - app/iris-multi
     dependencies:
       - ic
     ghc-options: -Wall

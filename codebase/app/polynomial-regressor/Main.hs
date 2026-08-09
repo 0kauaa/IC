@@ -1,11 +1,11 @@
 module Main where
 
-import Core.Params                (Params(..))
-import Core.Learner               (Learner(..))
-import Core.Utils                 (mean, stddev, interpret)
-import Models.PolynomialRegressor (polynomialRegressor)
-import Training.Training          (step, train, debug)
-import Dataset.Synthetic.Polynomial  (data_03_3neg)
+import Core.Params                  (Params(..))
+import Core.Learner                 (Learner(..))
+import Core.Utils                   (mean, stddev, interpret)
+import Models.PolynomialRegressor   (polynomialRegressor)
+import Training.Training            (step, train, debug)
+import Dataset.Synthetic.Polynomial (data_03_3neg)
 
 main :: IO ()
 main = do

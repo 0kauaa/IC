@@ -13,69 +13,69 @@ import Unsafe.Coerce (unsafeCoerce)
 import GHC.Exts      (Any)
 
 data MultiLearner (ps :: [Type]) (as :: [Type]) b = MultiLearner
-    { i :: Params ps -> Multi as -> b
-    , u :: Params ps -> Multi as -> b -> Params ps
-    , r :: Params ps -> Multi as -> b -> Multi as
-    , iniParams :: Params ps
+    { iM :: Params ps -> Multi as -> b
+    , uM :: Params ps -> Multi as -> b -> Params ps
+    , rM :: Params ps -> Multi as -> b -> Multi as
+    , iniParamsM :: Params ps
     }
 
 instance MultiCat MultiLearner where
     id = MultiLearner
-        { i        = \ParamsNull (a :::: MultiNull) -> a
-        , u        = \ParamsNull _ _          -> ParamsNull
-        , r        = \ParamsNull as _         -> as
-        , iniParams =  ParamsNull
+        { iM         = \ParamsNull (a :::: MultiNull) -> a
+        , uM         = \ParamsNull _ _          -> ParamsNull
+        , rM         = \ParamsNull as _         -> as
+        , iniParamsM =  ParamsNull
         }
 
     (.) g f = MultiLearner
-        { i = \params entry ->
-            let ps       = projectFirst (iniParams f) (iniParams g) params
-                qs       = projectRest  (iniParams f) (iniParams g) params
-                (as, bs) = splitMulti   (multiLen (iniParams f)) entry
-                b        = i f ps as
-            in  i g qs (b :::: bs)
-        , u = \params entry c ->
-            let ps       = projectFirst (iniParams f) (iniParams g) params
-                qs       = projectRest  (iniParams f) (iniParams g) params
-                (as, bs) = splitMulti   (multiLen (iniParams f)) entry
-                b        = i f ps as
-                bReq     = multiHead (r g qs (b :::: bs) c)
-                qs'      = u g qs (b :::: bs) c
-                ps'      = u f ps as bReq
+        { iM = \params entry ->
+            let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
+                qs       = projectRest  (iniParamsM f) (iniParamsM g) params
+                (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
+                b        = iM f ps as
+            in  iM g qs (b :::: bs)
+        , uM = \params entry c ->
+            let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
+                qs       = projectRest  (iniParamsM f) (iniParamsM g) params
+                (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
+                b        = iM f ps as
+                bReq     = multiHead (rM g qs (b :::: bs) c)
+                qs'      = uM g qs (b :::: bs) c
+                ps'      = uM f ps as bReq
             in unify ps' qs'
-        , r = \params entry c ->
-            let ps       = projectFirst (iniParams f) (iniParams g) params
-                qs       = projectRest  (iniParams f) (iniParams g) params
-                (as, bs) = splitMulti   (multiLen (iniParams f)) entry
-                b        = i f ps as
-                bReq     = multiHead (r g qs (b :::: bs) c)
-                fGrad    = r f ps as bReq
-                gGrad    = multiTail (r g qs (b :::: bs) c)
+        , rM = \params entry c ->
+            let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
+                qs       = projectRest  (iniParamsM f) (iniParamsM g) params
+                (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
+                b        = iM f ps as
+                bReq     = multiHead (rM g qs (b :::: bs) c)
+                fGrad    = rM f ps as bReq
+                gGrad    = multiTail (rM g qs (b :::: bs) c)
             in appendMulti fGrad gGrad
-        , iniParams = unify (iniParams f) (iniParams g)
+        , iniParamsM = unify (iniParamsM f) (iniParamsM g)
         }
  
     (//) f g = MultiLearner
-        { i = \params entry ->
-            let ps       = projectFirst (iniParams f) (iniParams g) params
-                qs       = projectRest  (iniParams f) (iniParams g) params
-                (as, bs) = splitMulti   (multiLen (iniParams f)) entry
-            in (i f ps as, i g qs bs)
-        , u = \params entry (bf, bg) ->
-            let ps       = projectFirst (iniParams f) (iniParams g) params
-                qs       = projectRest  (iniParams f) (iniParams g) params
-                (as, bs) = splitMulti   (multiLen (iniParams f)) entry
-                ps'      = u f ps as bf
-                qs'      = u g qs bs bg
+        { iM = \params entry ->
+            let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
+                qs       = projectRest  (iniParamsM f) (iniParamsM g) params
+                (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
+            in (iM f ps as, iM g qs bs)
+        , uM = \params entry (bf, bg) ->
+            let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
+                qs       = projectRest  (iniParamsM f) (iniParamsM g) params
+                (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
+                ps'      = uM f ps as bf
+                qs'      = uM g qs bs bg
             in unify ps' qs'
-        , r = \params entry (bf, bg) ->
-            let ps       = projectFirst (iniParams f) (iniParams g) params
-                qs       = projectRest  (iniParams f) (iniParams g) params
-                (as, bs) = splitMulti   (multiLen (iniParams f)) entry
-                fGrad    = r f ps as bf
-                gGrad    = r g qs bs bg
+        , rM = \params entry (bf, bg) ->
+            let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
+                qs       = projectRest  (iniParamsM f) (iniParamsM g) params
+                (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
+                fGrad    = rM f ps as bf
+                gGrad    = rM g qs bs bg
             in appendMulti fGrad gGrad
-        , iniParams = unify (iniParams f) (iniParams g)
+        , iniParamsM = unify (iniParamsM f) (iniParamsM g)
         }
  
 

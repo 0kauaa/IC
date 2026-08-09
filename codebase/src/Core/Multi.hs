@@ -8,4 +8,4 @@ data Multi (as :: [Type]) where
     MultiNull  :: Multi '[]
     (::::)     :: a -> Multi as -> Multi (a ': as)
 
-infix 5 ::::
+infixr 5 ::::
