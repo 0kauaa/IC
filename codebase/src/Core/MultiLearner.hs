@@ -21,7 +21,7 @@ data MultiLearner (ps :: [Type]) (as :: [Type]) b = MultiLearner
 
 instance MultiCat MultiLearner where
     id = MultiLearner
-        { iM         = \ParamsNull (a :::: MultiNull) -> a
+        { iM         = \ParamsNull (a :-: MultiNull) -> a
         , uM         = \ParamsNull _ _          -> ParamsNull
         , rM         = \ParamsNull as _         -> as
         , iniParamsM =  ParamsNull
@@ -33,14 +33,14 @@ instance MultiCat MultiLearner where
                 qs       = projectRest  (iniParamsM f) (iniParamsM g) params
                 (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
                 b        = iM f ps as
-            in  iM g qs (b :::: bs)
+            in  iM g qs (b :-: bs)
         , uM = \params entry c ->
             let ps       = projectFirst (iniParamsM f) (iniParamsM g) params
                 qs       = projectRest  (iniParamsM f) (iniParamsM g) params
                 (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
                 b        = iM f ps as
-                bReq     = multiHead (rM g qs (b :::: bs) c)
-                qs'      = uM g qs (b :::: bs) c
+                bReq     = multiHead (rM g qs (b :-: bs) c)
+                qs'      = uM g qs (b :-: bs) c
                 ps'      = uM f ps as bReq
             in unify ps' qs'
         , rM = \params entry c ->
@@ -48,9 +48,9 @@ instance MultiCat MultiLearner where
                 qs       = projectRest  (iniParamsM f) (iniParamsM g) params
                 (as, bs) = splitMulti   (multiLen (iniParamsM f)) entry
                 b        = iM f ps as
-                bReq     = multiHead (rM g qs (b :::: bs) c)
+                bReq     = multiHead (rM g qs (b :-: bs) c)
                 fGrad    = rM f ps as bReq
-                gGrad    = multiTail (rM g qs (b :::: bs) c)
+                gGrad    = multiTail (rM g qs (b :-: bs) c)
             in appendMulti fGrad gGrad
         , iniParamsM = unify (iniParamsM f) (iniParamsM g)
         }
@@ -81,26 +81,26 @@ instance MultiCat MultiLearner where
 
 -- funções auxiliares para Multi
 multiHead :: Multi (a ': as) -> a
-multiHead (x :::: _) = x
+multiHead (x :-: _) = x
 
 multiTail :: Multi (a ': as) -> Multi as
-multiTail (_ :::: xs) = xs
+multiTail (_ :-: xs) = xs
 
 multiLen :: Params ps -> Int
 multiLen ParamsNull  = 0
-multiLen (_ ::: ps)  = 1 + multiLen ps
+multiLen (_ :|: ps)  = 1 + multiLen ps
 
 appendMulti :: Multi as -> Multi bs -> Multi (as ++ bs)
 appendMulti MultiNull   ys = ys
-appendMulti (x :::: xs)  ys = x :::: appendMulti xs ys
+appendMulti (x :-: xs)  ys = x :-: appendMulti xs ys
 
 splitMulti :: Int -> Multi (as ++ bs) -> (Multi as, Multi bs)
 splitMulti 0 xs = (unsafeCoerce MultiNull, unsafeCoerce xs)
 splitMulti n xs =
     case (unsafeCoerce xs :: Multi (Any ': '[Any])) of
-         (x :::: rest) ->
+         (x :-: rest) ->
             let (as, bs) = splitMulti (n-1) (unsafeCoerce rest)
-            in  (unsafeCoerce (x :::: as), bs)
+            in  (unsafeCoerce (x :-: as), bs)
   where _ = xs
 
 -- auxiliar para Params

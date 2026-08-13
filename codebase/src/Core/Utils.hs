@@ -13,10 +13,10 @@ import Models.StandardRegressor (standardlizer)
 
 -- remove parâmetros aprendidos do espaço normalizado
 interpret :: Double -> Double -> Params '[Double, Double] -> Params '[Double, Double]
-interpret mu sigma (w ::: b ::: ParamsNull) = 
+interpret mu sigma (w :|: b :|: ParamsNull) = 
     let w' = (w / sigma) 
         b' = b - (w * mu) / sigma
-    in w' ::: b' ::: ParamsNull
+    in w' :|: b' :|: ParamsNull
 
 -- média
 mean :: [Double] -> Double

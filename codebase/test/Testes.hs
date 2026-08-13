@@ -26,10 +26,10 @@ f :: Learner '[Int] Int Int
 f =
     Learner
     {
-        i        = \(x ::: ParamsNull) a -> a + x,
-        u        = \(x ::: ParamsNull) _ _ -> (x + 1) ::: ParamsNull,
+        i        = \(x :|: ParamsNull) a -> a + x,
+        u        = \(x :|: ParamsNull) _ _ -> (x + 1) :|: ParamsNull,
         r        = \_ a _ -> a,
-        iniParam = 2 ::: ParamsNull
+        iniParam = 2 :|: ParamsNull
     }
 
 -- g : '[Int] -> Int -> Int
@@ -37,10 +37,10 @@ g :: Learner '[Int] Int Int
 g =
     Learner
     {
-        i        = \(x ::: ParamsNull) a -> a * x,
-        u        = \(x ::: ParamsNull) _ _ -> (x + 1) ::: ParamsNull,
+        i        = \(x :|: ParamsNull) a -> a * x,
+        u        = \(x :|: ParamsNull) _ _ -> (x + 1) :|: ParamsNull,
         r        = \_ a _ -> a,
-        iniParam = 3 ::: ParamsNull
+        iniParam = 3 :|: ParamsNull
     }
 
 -- h : '[Int] -> Int -> Int
@@ -48,10 +48,10 @@ h :: Learner '[Int] Int Int
 h =
     Learner
     {
-        i        = \(x ::: ParamsNull) a -> a - x,
-        u        = \(x ::: ParamsNull) _ _ -> (x - 1) ::: ParamsNull,
+        i        = \(x :|: ParamsNull) a -> a - x,
+        u        = \(x :|: ParamsNull) _ _ -> (x - 1) :|: ParamsNull,
         r        = \_ a _ -> a,
-        iniParam = 4 ::: ParamsNull
+        iniParam = 4 :|: ParamsNull
     }
 
 main :: IO ()

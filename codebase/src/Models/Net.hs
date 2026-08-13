@@ -17,10 +17,10 @@ zscore mu sigma = Learner
 
 denseLayer :: Double -> Double -> Learner '[Double, Double] Double Double
 denseLayer w0 b0 = Learner
-    { i = \(w ::: b ::: ParamsNull) x      -> w * x + b
-    , u = \(w ::: b ::: ParamsNull) x grad -> (w - ep * grad * x) ::: (b - ep * grad) ::: ParamsNull
-    , r = \(w ::: _ ::: ParamsNull) _ grad -> grad * w
-    , iniParam = w0 ::: b0 ::: ParamsNull
+    { i = \(w :|: b :|: ParamsNull) x      -> w * x + b
+    , u = \(w :|: b :|: ParamsNull) x grad -> (w - ep * grad * x) :|: (b - ep * grad) :|: ParamsNull
+    , r = \(w :|: _ :|: ParamsNull) _ grad -> grad * w
+    , iniParam = w0 :|: b0 :|: ParamsNull
     } where ep = 0.01
 
 relu :: Learner '[] Double Double

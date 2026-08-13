@@ -10,13 +10,13 @@ import Models.StandardRegressor (standardlizer)
 
 linearRegressor :: Learner '[Double, Double] Double Double
 linearRegressor = Learner
-    { i = \(w ::: b ::: ParamsNull) x   -> x * w + b
-    , u = \(w ::: b ::: ParamsNull) z p ->
+    { i = \(w :|: b :|: ParamsNull) x   -> x * w + b
+    , u = \(w :|: b :|: ParamsNull) z p ->
         let w' = w - ep * p * z
             b' = b - ep * p
-        in  w' ::: b' ::: ParamsNull
-    , r = \(w ::: _ ::: ParamsNull) z p -> z - ep * p * w
-    , iniParam = 0.0 ::: 0.0 ::: ParamsNull
+        in  w' :|: b' :|: ParamsNull
+    , r = \(w :|: _ :|: ParamsNull) z p -> z - ep * p * w
+    , iniParam = 0.0 :|: 0.0 :|: ParamsNull
     } where ep = 0.01
 
 sigmoid :: Learner '[] Double Double

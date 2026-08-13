@@ -17,10 +17,10 @@ import Unsafe.Coerce      (unsafeCoerce)
 import GHC.Exts           (Any)
 
 -- GADT do espaço de parâmtros
-infixr 5 :::
+infixr 5 :|:
 data Params (ps :: [Type]) where
-    ParamsNull :: Params '[]
-    (:::)      :: p -> Params ps -> Params (p ': ps)
+    ParamsNull  :: Params '[]
+    (:|:)       :: p -> Params ps -> Params (p ': ps)
 
 -- type family de concatenação entre espaço de parâmetros
 type family (xs :: [Type]) ++ (ys :: [Type]) :: [Type] where
@@ -35,7 +35,7 @@ instance ShowParams '[] where
     showParams ParamsNull = []
 
 instance (Show p, ShowParams ps) => ShowParams (p ': ps) where
-    showParams (x ::: xs) = show x : showParams xs
+    showParams (x :|: xs) = show x : showParams xs
 
 instance ShowParams ps => Show (Params ps) where
     show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
@@ -43,18 +43,18 @@ instance ShowParams ps => Show (Params ps) where
 -- funções auxiliares para manipulação do espaço de parâmetros
 projectFirst ::  Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
 projectFirst ParamsNull    _  _    = ParamsNull
-projectFirst (_ ::: rest) qs pqs  =
+projectFirst (_ :|: rest) qs pqs  =
     case unsafeCoerce pqs :: Params Any of
         ParamsNull -> unsafeCoerce ParamsNull
-        (x ::: xs) -> unsafeCoerce x ::: projectFirst rest qs (unsafeCoerce xs)
+        (x :|: xs) -> unsafeCoerce x :|: projectFirst rest qs (unsafeCoerce xs)
 
 projectRest :: Params ps -> Params qs -> Params (ps ++ qs) -> Params qs
 projectRest ParamsNull    _  qs   = qs
-projectRest (_ ::: rest) qs pqs  =
+projectRest (_ :|: rest) qs pqs  =
     case unsafeCoerce pqs :: Params Any of
         ParamsNull -> unsafeCoerce ParamsNull
-        (_ ::: xs) -> projectRest rest qs (unsafeCoerce xs)
+        (_ :|: xs) -> projectRest rest qs (unsafeCoerce xs)
 
 unify :: Params ps -> Params qs -> Params (ps ++ qs)
 unify ParamsNull  ys = ys
-unify (x ::: xs) ys = x ::: unify xs ys
+unify (x :|: xs) ys = x :|: unify xs ys

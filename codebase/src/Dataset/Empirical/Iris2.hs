@@ -25,6 +25,6 @@ fromIris2 irisRow =
       , sepal_width  irisRow
       , petal_length irisRow
       , petal_width  irisRow
-      ] :::: MultiNull
+      ] :-: MultiNull
     , label irisRow
     )
