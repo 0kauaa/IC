@@ -36,6 +36,7 @@ library:
     - Core.Multi
     - Core.MultiCat
     - Core.MultiLearner
+    - Core.PROPs
 
     # modelos
     - Models.LinearRegressor
@@ -53,6 +54,7 @@ library:
     - Dataset.Synthetic.Classified
     - Dataset.Empirical.IrisPCA2
     - Dataset.Empirical.Iris2
+    - Dataset.Empirical.Banknotes
 
     # sandbox Learner
     - Sandbox.Activations
@@ -142,6 +144,16 @@ executables:
     dependencies:
       - ic
     ghc-options: -Wall
+  
+  # bank-multi
+  bank-multi:
+    main: Main.hs
+    source-dirs:
+      - app/bank-multi
+    dependencies:
+      - ic
+    ghc-options: -Wall
+
 
 # testes
 tests:
