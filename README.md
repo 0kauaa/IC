@@ -16,7 +16,7 @@ Este projeto implementa essa estrutura em Haskell e a expande na construção em
 
 ## A categoria Learn
 
-A categoria **Learn**, formulada em *Backprop as a Functor*, é a definida como a estrutura por trás do aprendizado supervisionado, construída sob a perspectiva da Teoria das Categorias. Seus morfismos são uma quadrupla $(P, I, U, r)$ onde:
+A categoria **Learn**, formulada em *Backprop as a Functor (2019)*, é a definida como a estrutura por trás do aprendizado supervisionado, construída sob a perspectiva da Teoria das Categorias. Seus morfismos são uma quadrupla $(P, I, U, r)$ onde:
 
 * $P$ — espaço de parâmetros
 * $I : P \times A \to B$ — função de predição ( *implement* )
@@ -29,13 +29,13 @@ A composição de dois morfismos $f : A \to B$ e $g : B \to C$ define naturalmen
 
 O projeto implementa a estrutura **Learn** e duas generalizações, cada uma com sua classe categórica e seus morfismos:
 
-| Estrutura | Tipo | Origem → alvo | Classe |
-| --------- | ---- | ------------- | ------ |
-| `Learner` | Categoria | $a \to b$ (um objeto) | `Core.Cat` |
-| `MultiLearner` | Multicategoria | $[a_1, \dots, a_n] \to b$ | `Core.MultiCat` |
-| `PROPsLearner` | PROPs | $[a_1, \dots, a_n] \to [b_1, \dots, b_m]$ | `Core.PROPs` |
+| Estrutura        | Tipo           | Origem → alvo                              | Classe            |
+| ---------------- | -------------- | ------------------------------------------- | ----------------- |
+| `Learner`      | Categoria      | $a \to b$ (um objeto)                     | `Core.Cat`      |
+| `MultiLearner` | Multicategoria | $[a_1, \dots, a_n] \to b$                 | `Core.MultiCat` |
+| `PROPsLearner` | PROPs          | $[a_1, \dots, a_n] \to [b_1, \dots, b_m]$ | `Core.PROPs`    |
 
-Todas as três classes fornecem **composição sequencial** `(.)` — que propaga o gradiente da saída à entrada a cada composição, implementando o *backprop* — e **composição paralela** `(//), que combina morfismos em fluxos independentes:
+Todas as três classes fornecem **composição sequencial** `(.)` — que propaga o gradiente da saída à entrada a cada composição, implementando o *backprop* — e **composição paralela** `(//)`, que combina morfismos em fluxos independentes:
 
 * **`Learner`** (`(//)` em pares): dado $f : a \to b$ e $g : c \to d$, obtém $f \parallel g : (a, c) \to (b, d)$.
 * **`MultiLearner`** — morfismos consomem uma lista de entradas. A composição `(.)` conecta a saída de um morfismo a uma das entradas do seguinte, mantendo as demais intactas; `(//)` combina as listas de entradas e empaqueta as saídas em um par.
@@ -46,6 +46,7 @@ Essa progressão explora como o mesmo fenômeno composicional do *backprop* se c
 ---
 
 ## **Modelos implementados**
+
 ```text
 .
 ├── codebase/                           # implementação principal da pesquisa
@@ -149,7 +150,6 @@ Essa progressão explora como o mesmo fenômeno composicional do *backprop* se c
 │   │   ├── propose/                    # formularios e proposta da pesquisa
 │   │   └── reports/                    # relatórios parciais e finais
 │   ├── experiments/                    # experimentos de estudo
-│   ├── ideias/                         # anotações rápidas e hipóteses
 │   └── refs/                           # bibliografia da pesquisa
 │
 ├── tools/                              # ferramentas auxiliares externas (geralmente uso de outras linguagens para suporte)
@@ -286,4 +286,5 @@ stack test
 ## Autores
 
 **Kauã Santana da Silva** — discente, FATEC Baixada Santista Rubens Lara
+
 **Alexandre Garcia de Oliveira** — orientador, FATEC Baixada Santista Rubens Lara
