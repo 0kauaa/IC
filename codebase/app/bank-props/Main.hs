@@ -1,19 +1,17 @@
 module Main where
 
-import Core.MultiLearner         (MultiLearner(..))
+import Core.PROPsLearner         (PROPsLearner(..))
 import Core.Multi                (Multi(..))
-import Sandbox.Multi.Outputs     (bceMultiOutput)
-import Sandbox.Multi.Embed       (toMulti)
-import Sandbox.Cat.Preprocessing (zScore)
-import Training.Training         (trainMulti, accuracyMulti)
+import Sandbox.PROPs.Outputs     (bcePROPsOutput)
+import Training.Training         (trainPROPs, accuracyPROPs)
 
 import Data.Csv (decodeByName)
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Vector as V
 import Dataset.Empirical.Banknotes (Banknotes(..), fromBanknotes)
 
-classifier :: MultiLearner '[[Double]] '[[Double]] Double
-classifier = bceMultiOutput [0.0, 0.0, 0.0, 0.0, 0.0]
+classifier :: PROPsLearner '[[Double]] '[[Double]] '[[Double]]
+classifier = bcePROPsOutput [0.0, 0.0, 0.0, 0.0, 0.0]
 
 main :: IO ()
 main = do
@@ -29,9 +27,11 @@ main = do
         Right (_, v) -> return $ map fromBanknotes (V.toList v)
     
     let model      = classifier
-        p0         = iniParamsM model
-        ps         = trainMulti model p0 trainData 100
+        p0         = iniParamsP model
+        ps         = trainPROPs model p0 (map toPROPs trainData) 100
 
     putStrLn $ "parametros iniciais: " ++ show p0
     putStrLn $ "parametros finais: " ++ show ps
-    putStrLn $ "acuracia: " ++ show (accuracyMulti model ps testData * 100) ++ "%"
+    putStrLn $ "acuracia: " ++ show (accuracyPROPs model ps (map toPROPs testData) * 100) ++ "%"
+  where
+    toPROPs (xs, y) = (xs, [y] :-: MultiNull)

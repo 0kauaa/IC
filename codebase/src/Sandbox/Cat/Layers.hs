@@ -1,4 +1,4 @@
-module Sandbox.Layers
+module Sandbox.Cat.Layers
     ( denseLayer
     ) where
 

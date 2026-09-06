@@ -1,4 +1,4 @@
-module Sandbox.Routing
+module Sandbox.Cat.Routing
     ( monoid
     , comonoid
     , delete

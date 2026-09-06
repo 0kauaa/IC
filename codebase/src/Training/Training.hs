@@ -6,6 +6,9 @@ module Training.Training
     , trainMulti
     , accuracy
     , accuracyMulti
+    , stepPROPs
+    , trainPROPs
+    , accuracyPROPs
     ) where
 
 import Core.Learner
@@ -13,6 +16,7 @@ import Core.Params
 import Debug.Trace        (traceShow)
 import Core.Multi         (Multi(..))
 import Core.MultiLearner  (MultiLearner(..))
+import Core.PROPsLearner  (PROPsLearner(..))
 
 -- Learner
 step :: Learner ps Double Double -> Params ps -> (Double, Double) -> Params ps
@@ -42,7 +46,6 @@ accuracy model ps pairs =
 
     in fromIntegral acertos / fromIntegral (length pairs)
 
-
 -- MultiLearner
 stepMulti :: MultiLearner ps as b -> Params ps -> (Multi as, b) -> Params ps
 stepMulti model params (xs, y) =
@@ -61,5 +64,28 @@ accuracyMulti model ps entries =
         correto (entrada, y) =
             let pred   = iM model ps entrada
                 classe = if pred >= 0.5 then 1.0 else 0.0
-            in classe == y
+            in  classe == y
+    in fromIntegral acertos / fromIntegral (length entries)
+
+-- PROPsLearner
+stepPROPs :: PROPsLearner ps as bs -> Params ps -> (Multi as, Multi bs) -> Params ps
+stepPROPs model params (xs, ys) =
+    uP model params xs ys
+
+trainPROPs :: PROPsLearner ps as bs -> Params ps -> [(Multi as, Multi bs)] -> Int -> Params ps
+trainPROPs _     params _     0 = params
+trainPROPs model params pairs n =
+    let params' = foldl (stepPROPs model) params pairs
+    in trainPROPs model params' pairs (n - 1)
+
+accuracyPROPs :: PROPsLearner ps '[[Double]] '[[Double]] -> Params ps -> [(Multi '[[Double]], Multi '[[Double]])] -> Double
+accuracyPROPs _ _ [] = 0.0
+accuracyPROPs model ps entries =
+    let acertos = length (filter correto entries)
+
+        correto (entrada, (y :-: MultiNull)) =
+            let (p :-: MultiNull) = iP model ps entrada
+                classe = if head p >= 0.5 then 1.0 else 0.0
+            in  classe == head y
+
     in fromIntegral acertos / fromIntegral (length entries)

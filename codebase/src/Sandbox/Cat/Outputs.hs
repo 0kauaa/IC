@@ -1,4 +1,4 @@
-module Sandbox.Outputs
+module Sandbox.Cat.Outputs
     ( mseOutput
     , bceOutput) where
 

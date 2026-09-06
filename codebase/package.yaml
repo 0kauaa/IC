@@ -37,6 +37,7 @@ library:
     - Core.MultiCat
     - Core.MultiLearner
     - Core.PROPs
+    - Core.PROPsLearner
 
     # modelos
     - Models.LinearRegressor
@@ -57,16 +58,26 @@ library:
     - Dataset.Empirical.Banknotes
 
     # sandbox Learner
-    - Sandbox.Activations
-    - Sandbox.Layers
-    - Sandbox.Outputs
-    - Sandbox.Preprocessing
-    - Sandbox.Routing
+    - Sandbox.Cat.Activations
+    - Sandbox.Cat.Layers
+    - Sandbox.Cat.Outputs
+    - Sandbox.Cat.Preprocessing
+    - Sandbox.Cat.Routing
 
     # sandbox MultiLearner
     - Sandbox.Multi.Embed
     - Sandbox.Multi.Layers
     - Sandbox.Multi.Outputs
+    - Sandbox.Multi.Activations
+    - Sandbox.Multi.Preprocessing
+    - Sandbox.Multi.Routing
+
+    # sandbox PROPs
+    - Sandbox.PROPs.Embed
+    - Sandbox.PROPs.Layers
+    - Sandbox.PROPs.Activations
+    - Sandbox.PROPs.Outputs
+    - Sandbox.PROPs.Preprocessing
 
 # arquivos executaveis
 executables:
@@ -154,6 +165,14 @@ executables:
       - ic
     ghc-options: -Wall
 
+  # bank-props
+  bank-props:
+    main: Main.hs
+    source-dirs:
+      - app/bank-props
+    dependencies:
+      - ic
+    ghc-options: -Wall
 
 # testes
 tests:

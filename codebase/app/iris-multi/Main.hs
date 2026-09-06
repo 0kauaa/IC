@@ -1,11 +1,11 @@
 module Main where
 
-import Core.MultiLearner     (MultiLearner(..))
-import Core.Multi            (Multi(..))
-import Sandbox.Multi.Outputs (bceMultiOutput)
-import Sandbox.Multi.Embed   (toMulti)
-import Sandbox.Preprocessing (zScore)
-import Training.Training     (trainMulti, accuracyMulti)
+import Core.MultiLearner         (MultiLearner(..))
+import Core.Multi                (Multi(..))
+import Sandbox.Multi.Outputs     (bceMultiOutput)
+import Sandbox.Multi.Embed       (toMulti)
+import Sandbox.Cat.Preprocessing (zScore)
+import Training.Training         (trainMulti, accuracyMulti)
 
 import Data.Csv (decodeByName)
 import qualified Data.ByteString.Lazy as BL
@@ -13,7 +13,6 @@ import qualified Data.Vector as V
 import Dataset.Empirical.Iris2 (Iris2(..), fromIris2)
 
 irisClassifier :: MultiLearner '[[Double]] '[[Double]] Double
---                               w1,  w2,  w3,  w4,  b
 irisClassifier = bceMultiOutput [0.0, 0.0, 0.0, 0.0, 0.0]
 
 main :: IO ()

@@ -4,9 +4,6 @@ module Core.Params
     ( Params(..)
     , ShowParams(..)
     , type (++)
-    , projectFirst
-    , projectRest
-    , unify 
     ) where
 
 import Prelude           hiding ((++))
@@ -39,22 +36,3 @@ instance (Show p, ShowParams ps) => ShowParams (p ': ps) where
 
 instance ShowParams ps => Show (Params ps) where
     show xs = "[" P.++ intercalate ", " (showParams xs) P.++ "]"
-
--- funções auxiliares para manipulação do espaço de parâmetros
-projectFirst ::  Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
-projectFirst ParamsNull    _  _    = ParamsNull
-projectFirst (_ :|: rest) qs pqs  =
-    case unsafeCoerce pqs :: Params Any of
-        ParamsNull -> unsafeCoerce ParamsNull
-        (x :|: xs) -> unsafeCoerce x :|: projectFirst rest qs (unsafeCoerce xs)
-
-projectRest :: Params ps -> Params qs -> Params (ps ++ qs) -> Params qs
-projectRest ParamsNull    _  qs   = qs
-projectRest (_ :|: rest) qs pqs  =
-    case unsafeCoerce pqs :: Params Any of
-        ParamsNull -> unsafeCoerce ParamsNull
-        (_ :|: xs) -> projectRest rest qs (unsafeCoerce xs)
-
-unify :: Params ps -> Params qs -> Params (ps ++ qs)
-unify ParamsNull  ys = ys
-unify (x :|: xs) ys = x :|: unify xs ys

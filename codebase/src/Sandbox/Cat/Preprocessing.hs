@@ -1,6 +1,7 @@
-module Sandbox.Preprocessing
+module Sandbox.Cat.Preprocessing
     ( zScore
-    , minMax) where
+    , minMax
+    , binEncoder) where
 
 import Core.Params
 import Core.Learner
@@ -18,5 +19,13 @@ minMax lower higher = Learner
     { i = \ParamsNull x   -> (x - lower) / (higher - lower)
     , u = \ParamsNull _ _ -> ParamsNull
     , r = \ParamsNull _ g -> g / (higher - lower)
+    , iniParam = ParamsNull
+    }
+
+binEncoder :: Double -> Learner '[] Double Double
+binEncoder t = Learner
+    { i = \ParamsNull x   -> if x >= t then 1 else 0
+    , u = \ParamsNull _ _ -> ParamsNull
+    , r = \ParamsNull _ _ -> 0
     , iniParam = ParamsNull
     }

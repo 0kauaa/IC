@@ -1,16 +1,13 @@
-{-# LANGUAGE KindSignatures       #-}
-{-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE ScopedTypeVariables  #-}
+{-# LANGUAGE KindSignatures, FlexibleInstances, UndecidableInstances, ScopedTypeVariables  #-}
 
 module Core.MultiLearner where
 
 import Data.Kind     (Type)
 import Core.Multi    (Multi(..))
-import Core.Params   (Params(..), type (++), projectFirst, projectRest, unify)
+import Core.Params   (Params(..), type (++))
 import Core.MultiCat (MultiCat(..))
 import Unsafe.Coerce (unsafeCoerce)
-import GHC.Exts      (Any)
+import Core.Utils    (projectFirst, projectRest, multiLen, multiHead, multiTail, splitMulti, appendMulti, unify)
 
 data MultiLearner (ps :: [Type]) (as :: [Type]) b = MultiLearner
     { iM :: Params ps -> Multi as -> b
@@ -22,8 +19,8 @@ data MultiLearner (ps :: [Type]) (as :: [Type]) b = MultiLearner
 instance MultiCat MultiLearner where
     id = MultiLearner
         { iM         = \ParamsNull (a :-: MultiNull) -> a
-        , uM         = \ParamsNull _ _          -> ParamsNull
-        , rM         = \ParamsNull as _         -> as
+        , uM         = \ParamsNull _ _               -> ParamsNull
+        , rM         = \ParamsNull as _              -> as
         , iniParamsM =  ParamsNull
         }
 
@@ -77,32 +74,3 @@ instance MultiCat MultiLearner where
             in appendMulti fGrad gGrad
         , iniParamsM = unify (iniParamsM f) (iniParamsM g)
         }
- 
-
--- funções auxiliares para Multi
-multiHead :: Multi (a ': as) -> a
-multiHead (x :-: _) = x
-
-multiTail :: Multi (a ': as) -> Multi as
-multiTail (_ :-: xs) = xs
-
-multiLen :: Params ps -> Int
-multiLen ParamsNull  = 0
-multiLen (_ :|: ps)  = 1 + multiLen ps
-
-appendMulti :: Multi as -> Multi bs -> Multi (as ++ bs)
-appendMulti MultiNull   ys = ys
-appendMulti (x :-: xs)  ys = x :-: appendMulti xs ys
-
-splitMulti :: Int -> Multi (as ++ bs) -> (Multi as, Multi bs)
-splitMulti 0 xs = (unsafeCoerce MultiNull, unsafeCoerce xs)
-splitMulti n xs =
-    case (unsafeCoerce xs :: Multi (Any ': '[Any])) of
-         (x :-: rest) ->
-            let (as, bs) = splitMulti (n-1) (unsafeCoerce rest)
-            in  (unsafeCoerce (x :-: as), bs)
-  where _ = xs
-
--- auxiliar para Params
-splitParams :: Params ps -> Params qs -> Params (ps ++ qs) -> (Params ps, Params qs)
-splitParams ps qs params = (projectFirst ps qs params, projectRest ps qs params)

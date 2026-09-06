@@ -7,10 +7,10 @@ import Core.Learner               (Learner(..))
 import Core.Params                (Params(..))
 
 -- learners
-import Sandbox.Layers             (denseLayer)
-import Sandbox.Activations        (relu)
-import Sandbox.Outputs            (bceOutput)
-import Sandbox.Preprocessing      (zScore)
+import Sandbox.Cat.Layers             (denseLayer)
+import Sandbox.Cat.Activations        (relu)
+import Sandbox.Cat.Outputs            (bceOutput)
+import Sandbox.Cat.Preprocessing      (zScore)
 
 -- treinamento e teste
 import Core.Utils                 (mean, stddev)

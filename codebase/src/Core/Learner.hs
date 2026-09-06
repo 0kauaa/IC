@@ -8,7 +8,8 @@ module Core.Learner
 import Prelude hiding (id, (.))
 import Data.Kind      (Type)
 import Core.Cat       (Cat(..))
-import Core.Params    (Params(..), projectFirst, projectRest, unify, type (++))
+import Core.Params    (Params(..), type (++))
+import Core.Utils     (projectFirst, projectRest, unify)
 
 data Learner (ps :: [Type]) a b = Learner
     { i        :: Params ps -> a -> b                -- implement
