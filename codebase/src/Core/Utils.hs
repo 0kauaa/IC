@@ -10,6 +10,8 @@ module Core.Utils
     , projectFirst
     , projectRest
     , unify
+    , argmax
+    , oneHot
     ) where
 
 import Prelude hiding ((.))
@@ -65,6 +67,7 @@ splitMulti n xs =
             in  (unsafeCoerce (x :-: as), bs)
   where _ = xs
 
+
 -- auxiliar para Params
 projectFirst ::  Params ps -> Params qs -> Params (ps ++ qs) -> Params ps
 projectFirst ParamsNull    _  _    = ParamsNull
@@ -85,3 +88,10 @@ unify ParamsNull  ys = ys
 unify (x :|: xs) ys = x :|: unify xs ys
 splitParams :: Params ps -> Params qs -> Params (ps ++ qs) -> (Params ps, Params qs)
 splitParams ps qs params = (projectFirst ps qs params, projectRest ps qs params)
+
+-- outras funções
+argmax :: [Double] -> Int
+argmax xs = snd (maximum (zip xs [(0 :: Int)..]))
+
+oneHot :: Int -> [Double]
+oneHot k = [if i == k then 1.0 else 0.0 | i <- [0..2]]

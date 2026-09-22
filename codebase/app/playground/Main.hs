@@ -1,56 +1,65 @@
 module Main where
 
--- essenciais
-import Prelude hiding             (id, (.))
-import Core.Cat                   (Cat(..))
-import Core.Learner               (Learner(..))
-import Core.Params                (Params(..))
+import Prelude hiding (id, (.))
 
--- learners
-import Sandbox.Cat.Layers             (denseLayer)
-import Sandbox.Cat.Activations        (relu)
-import Sandbox.Cat.Outputs            (bceOutput)
-import Sandbox.Cat.Preprocessing      (zScore)
+import Core.PROPs        (PROPs(..))
+import Core.PROPsLearner (PROPsLearner(..))
+import Core.Multi        (Multi(..))
 
--- treinamento e teste
-import Core.Utils                 (mean, stddev)
-import Training.Training          (train, accuracy)
+import Sandbox.PROPs.Preprocessing (zScore)
+import Sandbox.PROPs.Layers        (denseLayer)
+import Sandbox.PROPs.Activations   (relu)
+import Sandbox.PROPs.Outputs       (bcePROPsOutput)
 
--- dados
-import Dataset.Empirical.IrisPCA2 (IrisPCA2(..), fromIrisPCA2)
-import Data.Csv                   (decodeByName)
+import Core.Utils        (mean, stddev)
+import Training.Training (trainPROPs, accuracyPROPs)
+
+import Data.List (transpose)
+import Data.Csv  (decodeByName)
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Vector as V
+import Dataset.Empirical.Banknotes (fromBanknotes)
 
--- modelo
-layer1 ::Learner '[Double, Double] Double Double
-layer1 = denseLayer 0.3 0.0
+-- inicialização não nula (aleatória, entre -0.5 e 0.5)
+w0 :: Int -> Double
+w0 k = sin (fromIntegral (k * 97 + 131)) * 0.5
 
-layer2 ::Learner '[Double, Double] Double Double
-layer2 = denseLayer 0.5 0.0
+-- camada escondida 4 -> 16: 16 linhas, cada uma com 4 pesos e 1 bias
+escondida :: [[Double]]
+escondida = [[w0 (i * 5 + j) | j <- [0..4]] | i <- [0..15]]
+    
+-- camada de saida 16 -> 1: 17 valores (16 pesos e 1 bias)
+saida :: [Double]
+saida =  [w0 (80 + k) | k <- [0..16]]
 
-classifier :: Double -> Double -> Learner '[Double, Double, Double, Double] Double Double
-classifier mu sigma = bceOutput . layer2 . relu . layer1 . zScore mu sigma
+-- mlp 4 -> 16 -> 1
+rede :: [[Double]] -> [Double] -> [Double] -> [Double] -> PROPsLearner '[[[Double]], [Double]] '[[Double]] '[[Double]]
+rede ws out mu sigma =
+    bcePROPsOutput out . relu . denseLayer ws . zScore mu sigma -- bce ∘ relu ∘ dense ∘ zscore
+
+extrai :: Multi '[[Double]] -> [Double]
+extrai (xs :-: MultiNull) = xs
 
 main :: IO ()
 main = do
-
-    trainFile <- BL.readFile "../data/iris/prep/iris2_train.csv"
+    trainFile <- BL.readFile "../data/banknote/prep/bank_train.csv"
     trainData <- case decodeByName trainFile of
         Left  e      -> error e
-        Right (_, v) -> return $ V.toList v
+        Right (_, v) -> return $ map fromBanknotes (V.toList v)
 
-    testFile <- BL.readFile "../data/iris/prep/iris2_test.csv"
+    testFile <- BL.readFile "../data/banknote/prep/bank_test.csv"
     testData <- case decodeByName testFile of
         Left  e      -> error e
-        Right (_, v) -> return $ V.toList v
+        Right (_, v) -> return $ map fromBanknotes (V.toList v)
     
-    let trainPairs = map fromIrisPCA2 trainData
-        testPairs  = map fromIrisPCA2 testData
-        mu         = mean   (map fst trainPairs)
-        sigma      = stddev (map fst trainPairs)
-        model      = classifier mu sigma
-        p0         = iniParam model
-        ps         = train model p0 trainPairs 100
+    let cols  = transpose (map extrai (map fst trainData))
+        mu    = map mean cols
+        sigma = map stddev cols
+        model = rede escondida saida mu sigma
+        p0    = iniParamsP model
+        ps    = trainPROPs model p0 (map toPROPs trainData) 100
 
-    putStrLn $ "acuracia: " ++ show (accuracy model ps testPairs * 100) ++ "%"
+
+    putStrLn $ "acuracia: " ++ show (accuracyPROPs model ps (map toPROPs testData) * 100) ++ "%"
+
+    where toPROPs (xs, y) = (xs, [y] :-: MultiNull)

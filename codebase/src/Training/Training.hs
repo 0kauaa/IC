@@ -9,11 +9,13 @@ module Training.Training
     , stepPROPs
     , trainPROPs
     , accuracyPROPs
+    , accuracyClasses
     ) where
 
 import Core.Learner
 import Core.Params
 import Debug.Trace        (traceShow)
+import Core.Utils         (argmax)
 import Core.Multi         (Multi(..))
 import Core.MultiLearner  (MultiLearner(..))
 import Core.PROPsLearner  (PROPsLearner(..))
@@ -89,3 +91,11 @@ accuracyPROPs model ps entries =
             in  classe == head y
 
     in fromIntegral acertos / fromIntegral (length entries)
+
+accuracyClasses :: PROPsLearner ps '[[Double]] '[[Double]] -> Params ps -> [(Multi '[[Double]], Int)] -> Double
+accuracyClasses _ _ [] = 0.0
+accuracyClasses model ps entries =
+    let ok = length (filter certo entries)
+        certo (xs, k) = case iP model ps xs of
+            (p :-: MultiNull) -> argmax p == k
+    in fromIntegral ok / fromIntegral (length entries)

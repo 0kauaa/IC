@@ -55,6 +55,7 @@ library:
     - Dataset.Synthetic.Classified
     - Dataset.Empirical.IrisPCA2
     - Dataset.Empirical.Iris2
+    - Dataset.Empirical.Iris
     - Dataset.Empirical.Banknotes
 
     # sandbox Learner
@@ -170,6 +171,15 @@ executables:
     main: Main.hs
     source-dirs:
       - app/bank-props
+    dependencies:
+      - ic
+    ghc-options: -Wall
+
+  # props (mlp iris 3 classes)
+  props:
+    main: Main.hs
+    source-dirs:
+      - app/props
     dependencies:
       - ic
     ghc-options: -Wall
