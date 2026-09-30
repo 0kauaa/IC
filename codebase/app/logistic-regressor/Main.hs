@@ -18,4 +18,4 @@ main = do
         ps    = train model p0 pairs 1000
 
     putStrLn $ "coeficientes de classificação: " ++ show (interpret mu sigma ps)
-    putStrLn $ "predicao para a entrada 1.2 (1): " ++ show (i model ps 0.1)
+    putStrLn $ "predicao para a entrada 1.2 (1): " ++ show (i model ps 1.2)
