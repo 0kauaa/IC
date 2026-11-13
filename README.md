@@ -243,19 +243,19 @@ O `Sandbox/` reúne morfismos **sem estrutura de modelo**, organizados por estru
 
 Modelos construídos inteiramente por composição de primitivos, executáveis em `codebase/app/`. Bateria de resultados (`research/docs/reports/bateria-testes-estruturas.md`, local ao ambiente de pesquisa):
 
-| Executável              | Estrutura | Modelo                                                                                 | Resultado principal                                                         |
-| ------------------------ | --------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `linear-regressor`     | Cat       | regressão linear $(f(x) = 2x +1)$                                                   | $w = 2{.}0478$; $b = 0{.}3710$                                          |
-| `standard-regressor`   | Cat       | linear ∘ z-score $(f(x) = 2x +1)$                                                   | $w = 2{.}0575$; $b = 0{.}2662$; bem mais estável ao *leraning rate*. |
-| `polynomial-regressor` | Cat       | linear ∘ z-score ∘ $x^2$ $(f(x) = 0.3x^2 - 3$                                    | $w = 0{.}2876; b = -2{.}8641$                                            |
-| `logistic-regressor`   | Cat       | sigmoid ∘ linear ∘ z-score $(f(x) = 1, \text{se } x \geq 0.5; 0, \text{se }x < 0)$ | $w = 9{.}4394; b = -0{.}8982$                                             |
-| `small-net`            | Cat       | rede mínima (iris-pca2, binário)                                                     | acurácia **100,0%**                                                  |
-| `residual-net`         | Cat       | blocos residuais via $(f \parallel \mathrm{id})$                                     | composição paralela + roteamento                                          |
-| `iris-multi`           | MultiCat  | neurônio único sobre 4 features (iris binário)                                      | acurácia **100,0%**                                                  |
-| `bank-multi`           | MultiCat  | neurônio único sobre 4 features (banknote)                                           | acurácia **98,01%**                                                  |
-| `bank-props`           | PROPs     | BCE vetorial (banknote)                                                                | acurácia **98,01%**                                                  |
-| `playground`           | PROPs     | MLP 4→16→1 (banknote)                                                                | acurácia **99,78%**                                                  |
-| `props`                | PROPs     | MLP 4→8→3, softmax+CCE (iris, 3 classes)                                             | acurácia **100,0%**                                                  |
+| Executável              | Estrutura | Modelo                                                                                   | Resultado principal                                                         |
+| ------------------------ | --------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `linear-regressor`     | Cat       | regressão linear $(f(x) = 2x +1)$                                                     | $w = 2{.}0478$; $b = 0{.}3710$                                          |
+| `standard-regressor`   | Cat       | linear ∘ z-score $(f(x) = 2x +1)$                                                     | $w = 2{.}0575$; $b = 0{.}2662$; bem mais estável ao *leraning rate*. |
+| `polynomial-regressor` | Cat       | linear ∘ z-score ∘ $x^2$ $(f(x) = 0.3x^2 - 3$                                      | $w = 0{.}2876; b = -2{.}8641$                                            |
+| `logistic-regressor`   | Cat       | sigmoid ∘ linear ∘ z-score $(f(x) = 1, \text{se } x \geq 0.5; 0, \text{se }x < 0.5)$ | $w = 9{.}4394; b = -0{.}8982$                                             |
+| `small-net`            | Cat       | rede mínima (iris-pca2, binário)                                                       | acurácia **100,0%**                                                  |
+| `residual-net`         | Cat       | blocos residuais via $(f \parallel \mathrm{id})$                                       | composição paralela + roteamento                                          |
+| `iris-multi`           | MultiCat  | neurônio único sobre 4 features (iris binário)                                        | acurácia **100,0%**                                                  |
+| `bank-multi`           | MultiCat  | neurônio único sobre 4 features (banknote)                                             | acurácia **98,01%**                                                  |
+| `bank-props`           | PROPs     | BCE vetorial (banknote)                                                                  | acurácia **98,01%**                                                  |
+| `playground`           | PROPs     | MLP 4→16→1 (banknote)                                                                  | acurácia **99,78%**                                                  |
+| `props`                | PROPs     | MLP 4→8→3, softmax+CCE (iris, 3 classes)                                               | acurácia **100,0%**                                                  |
 
 Os experimentos verificam a execução composicional de $I$, $U$ e $r$; não constituem, isoladamente, prova dos axiomas categoriais. As leis de identidade e associatividade são testadas empiricamente em `codebase/test/Testes.hs` (`stack test`).
 
