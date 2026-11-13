@@ -232,7 +232,7 @@ A composição `(.)` da categoria já sabe treinar a rede inteira. Não existe `
 
 O `Sandbox/` reúne morfismos **sem estrutura de modelo**, organizados por estrutura categorial (`Cat/`, `Multi/`, `PROPs/`), prontos para composição livre:
 
-* **Activations**: `relu`, `sigmoid`, `tanh` (e `softmax` nas PROPs, com gradiente $s_i\,(g_i - \sum_k s_k g_k)$).
+* **Activations**: `relu`, `sigmoid`, `tanh` e `softmax` nas PROPs, com gradiente $s_i\,(g_i - \sum_k s_k g_k)$.
 * **Layers**: camadas densas com inicialização de parâmetros e gradiente local.
 * **Outputs**: morfismos de saída com a função de perda embutida (a perda é propagada como gradiente via $r$): `mse`, `bce` e, nas PROPs, `cce` — que combina o gradiente da *softmax* com o da *cross-entropy* em um único morfismo.
 * **Preprocessing**: `zScore`, `minMax`, `binEncoder` e, nas PROPs, `pca` e `multiEncoder` (*one-hot*).
