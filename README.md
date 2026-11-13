@@ -247,7 +247,7 @@ Modelos construídos inteiramente por composição de primitivos, executáveis e
 | ------------------------ | --------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `linear-regressor`     | Cat       | regressão linear $(f(x) = 2x +1)$                                                   | $w = 2{.}0478$; $b = 0{.}3710$                                          |
 | `standard-regressor`   | Cat       | linear ∘ z-score $(f(x) = 2x +1)$                                                   | $w = 2{.}0575$; $b = 0{.}2662$; bem mais estável ao *leraning rate*. |
-| `polynomial-regressor` | Cat       | linear ∘ z-score ∘ $x^2$ $(f(x) = 0.3x^2 - 3$                                    | $ w = 0{.}2876; b = -2{.}8641$                                           |
+| `polynomial-regressor` | Cat       | linear ∘ z-score ∘ $x^2$ $(f(x) = 0.3x^2 - 3$                                    | $w = 0{.}2876; b = -2{.}8641$                                            |
 | `logistic-regressor`   | Cat       | sigmoid ∘ linear ∘ z-score $(f(x) = 1, \text{se } x \geq 0.5; 0, \text{se }x < 0)$ | $w = 9{.}4394; b = -0{.}8982$                                             |
 | `small-net`            | Cat       | rede mínima (iris-pca2, binário)                                                     | acurácia **100,0%**                                                  |
 | `residual-net`         | Cat       | blocos residuais via $(f \parallel \mathrm{id})$                                     | composição paralela + roteamento                                          |
